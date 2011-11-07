@@ -1,0 +1,52 @@
+2011-10-17 version 1.4  <valiska@gmail.com>
+
+	* dft-u2.c: mplib_dft_u2(): u2 potential for DFT calculations
+	added. It is the binary potential integrated over the lateral
+	directions using cut-out disk-like approximation.
+
+2011-10-16 version 1.3  <valiska@gmail.com>
+
+	* dft-u1.c: mplib_dft_u1(): unary potential for the DFT
+	project. It is essentially _unary() function up to a sign and
+	the Bjerrum length. Stays separatelly for clearness.
+
+2010-10-24 version 1.2  <valiska@gmail.com>
+
+	* u2eff.c: mplib_potential_binary_eff(): bug fixed. (z1-z2) < Rc
+	part added. tests seem OK.
+
+2010-10-22 21:45 BST  version 1.1  <valiska@gmail.com>
+
+	* u2eff.c: mplib_potential_binary_eff(): effective potential
+	from the disk cut-out approximation.
+
+2010-09-13 22:10 CET  version 0.9  <valiska@gmail.com>
+
+	* u1.c: formula corrected.
+
+	* potentials_f.c: _f suffix removed (fortran compiled binaries
+	(.o) have underscore anyway).
+
+2010-09-01 21:30 CET  version 0.7  <valiska@gmail.com>
+
+        * renamed to mplib (metallic pore library): Name convention
+	changed to mplib.
+
+2010-07-30  version 0.5  <valiska@gmail.com>
+
+	* potentials_f.h  potentials_f.c: rewritten for gfortran (f90?),
+	won't work with g77.
+
+2010-07-28  version 0.4  <valiska@gmail.com>
+
+	* potentials_f.h: header file to be included by the fortran
+	source. It seem it is ganz egal for fortran.
+
+	* potentials_f.c: wrappers for the fortran code. Return value as
+	a last argument pointer to get it from the fortran code, why?
+
+2010-07-26  version 0.1  <valiska@gmail.com>
+
+	* u1.c u2.c: unary and binary potentials. Tests needed.
+
+	* Makefile.am:

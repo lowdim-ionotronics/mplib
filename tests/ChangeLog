@@ -1,0 +1,47 @@
+2011-10-17 version 1.4  <valiska@gmail.com>
+
+	* c: test-dft-u2.c: checking the dft_u2(). Tests seem OK,
+	results seem reasonable as well.
+
+2011-10-16 version 1.3  <valiska@gmail.com>
+
+	* c: test-u1.c: checking the dft_u1(). Tests seem OK.
+
+2010-10-22 21:45 BST  version 1.1  <valiska@gmail.com>
+
+	* c/test-u2eff.c: tests seems OK.
+
+	* c: u1.c -> test-u1.c, u2.c -> test-u2.c.
+
+2010-09-13 23:00 CET   version 1.0  <valiska@gmail.com>
+
+	* fortran/u1.F: tests OK.
+
+2010-09-13 22:10 CET   version 0.9  <valiska@gmail.com>
+
+	* c/u1.c: Tests mplib_potential_unary() OK.
+
+2010-09-13  version 0.8  <valiska@gmail.com>
+
+	* c/u2.c: tests mplib_potential_binary() OK. Integral
+	representation seems fine up to computer zero.
+
+2010-09-01 21:30 CET  version 0.7  <valiska@gmail.com>
+
+        * mplib : name convention changed to mplib (metallic pore
+	library).
+
+2010-07-30  version 0.5  <valiska@gmail.com>
+
+	* fortran/u1.F: rewritten for gfortran (won't work with g77).
+	Tests against C source (see c/u1.c) seem OK.
+
+2010-07-28  version 0.4  <valiska@gmail.com>
+
+	* fortran/u1.F: test the fortran call to unary_f(). I had to
+	make (z,*val) in lib/potentials_f.c to get the value. Stupid
+	fortran, or stupid me?
+
+2010-07-27  version 0.3  <valiska@gmail.com>
+
+	* c/u1.c c/u2.c: test c-calls.
