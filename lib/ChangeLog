@@ -1,7 +1,7 @@
 2012-05-17 version 1.6  <valiska@gmail.com>
 
-	* Makefile.am: lib_LTLIBRARIES install so instead of locally
-	used static.
+	* Makefile.am: lib_LTLIBRARIES install 'so' instead of locally
+	used static libs.
 
 	* potentialc.h -> mplib.h, potentials_f.h -> mplib_f.h:
 

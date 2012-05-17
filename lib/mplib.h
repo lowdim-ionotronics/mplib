@@ -1,6 +1,7 @@
-/*  potentials.h 2010-07-27  header file for unary and binary potentials 
+/*  mplib.h 2012-05-17  header file for various screened electrostatic 
+ * potentials of point charges confined between two metalic walls
  *
- * Copyright (C) 2010 Svyatoslav Kondrat (Valiska)
+ * Copyright (C) 2010 2012 Svyatoslav Kondrat (Valiska)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#if !defined (_HAVE_POTENTIALS_H_)
-#define _HAVE_POTENTIALS_H_
+#if !defined (_HAVE_MPLIB_H_)
+#define _HAVE_MPLIB_H_
 
 #undef __BEGIN_DECLS
 #undef __END_DECLS
@@ -32,6 +33,8 @@
 
 __BEGIN_DECLS
 
+/* 'raw' electrostatic potentials due to pore screening
+   (see S Kondrat & A kornyshev, J Phys: Cond. Matt. 23 022201 (2011))*/
 double mplib_potential_unary (double z, double L);
 double mplib_potential_binary (double z1, double z2, double R, double L);
 
@@ -39,7 +42,7 @@ double mplib_potential_binary (double z1, double z2, double R, double L);
 double mplib_potential_unary_ (double * z, double * L); 
 double mplib_potenial_binary_ (double * z1, double * z2, double * R, double * L);
 
-/* Potentials for the DFT calculations */
+/* Potentials for DFT calculations */
 double mplib_dft_u1 (double z, double L, double LB);
 double mplib_dft_u2 (double z1, double z2, double L, double LB, double b);
 

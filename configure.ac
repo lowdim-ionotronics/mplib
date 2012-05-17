@@ -2,12 +2,24 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT(mplib, 1.6, valiska@gmail.com)
+AC_INIT(mplib, 1.6.1, valiska@gmail.com)
 AC_CONFIG_SRCDIR([lib/u1.c])
 AC_CONFIG_HEADER([config.h])
 
-AM_INIT_AUTOMAKE
+PACKAGE=mplib
+VERSION=1.6.1
 
+dnl IFACE_NUMBER (current) : REV : AGE (< IFACE_NUMBER)
+MPLIB_LT_VERSION="6:0:6"
+AC_SUBST(MPLIB_LT_VERSION)
+
+AC_SUBST(PACKAGE)
+AC_SUBST(PACKAGE_STRING)
+AC_SUBST(VERSION)
+
+AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
+
+dnl maintainer
 AC_SUBST(MPLIB_MAINTAINER)
 MPLIB_MAINTAINER="valiska@gmail.com"
 
@@ -67,8 +79,14 @@ if test "x$disable_assertions" = "xyes"; then
 #	CFLAGS="-DNDEBUG $CFLAGS"
 fi
 
+MPLIB_CFLAGS="-I$includedir"
+MPLIB_LIBS="-L$libdir -lmplib"
+
+AC_SUBST(MPLIB_CFLAGS)
+AC_SUBST(MPLIB_LIBS)
 
 AC_CONFIG_FILES([Makefile
+		mplib.pc mplib-config
 		lib/Makefile
 		tests/Makefile
 		tests/c/Makefile

@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: MPLIB
+Description: electrostatic potentials for simulations or DFT calculations of ionic liquids in a metal pore
+Version: @VERSION@
+Libs: @MPLIB_LIBS@ @LIBS@
+Cflags: @MPLIB_CFLAGS@

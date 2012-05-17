@@ -1,3 +1,7 @@
+2012-05-17 version 1.6  <valiska@gmail.com>
+
+	* mplib.pc and mplib-config:
+
 2010-10-17 version 1.5  <valiska@gmail.com>
 
 	* configure.ac: two options added, to optimize
