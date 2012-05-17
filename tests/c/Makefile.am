@@ -6,10 +6,10 @@ AM_CFLAGS = -Wall -DMPLIB_MAINTAINER=\"@MPLIB_MAINTAINER@\"  -g
 AM_LDFLAGS = @GSL_LIBS@ -pedantic -ansi -fwritable-strings -Wall
 
 test_u1_SOURCES = test-u1.c
-test_u1_LDADD = $(top_srcdir)/lib/libmplib.a
+test_u1_LDADD = $(top_srcdir)/lib/libmplib.la
 
 test_u2_SOURCES = test-u2.c
-test_u2_LDADD = $(top_srcdir)/lib/libmplib.a
+test_u2_LDADD = $(top_srcdir)/lib/libmplib.la
 
 test_dft_u2_SOURCES = test-dft-u2.c
-test_dft_u2_LDADD = $(top_srcdir)/lib/libmplib.a
+test_dft_u2_LDADD = $(top_srcdir)/lib/libmplib.la

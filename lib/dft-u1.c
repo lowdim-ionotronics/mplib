@@ -21,6 +21,8 @@ a *  It is up to a copnstant (-LB, note the sign) as in u1.c
 //#define DEBUG
 #include "defines.h"
 
+#include "mplib.h"
+
 #include <stdio.h>
 #include <math.h>
 	
@@ -75,5 +77,3 @@ static double inline f (double Q, void * params) {
 
 	return f;
 }
-
-

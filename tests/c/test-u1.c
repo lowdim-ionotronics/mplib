@@ -19,7 +19,7 @@
 
 #include <stdio.h>
 
-#include "potentials.h"
+#include "mplib.h"
 
 #define EPS    2.e-5
 

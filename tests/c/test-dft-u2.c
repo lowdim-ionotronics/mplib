@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "potentials.h"
+#include "mplib.h"
 
 #define EPS    1.e-8
 #define pow2(x)     ( (x) * (x) )

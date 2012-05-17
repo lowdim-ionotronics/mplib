@@ -43,8 +43,6 @@ double mplib_potenial_binary_ (double * z1, double * z2, double * R, double * L)
 double mplib_dft_u1 (double z, double L, double LB);
 double mplib_dft_u2 (double z1, double z2, double L, double LB, double b);
 
-
 __END_DECLS
 
 #endif 
-

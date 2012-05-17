@@ -5,7 +5,7 @@ c     Test unary potential (libmplib.a) called by a fortran program
 c
        implicit none
 #define MPLIB_HAVE_UNARY
-#include "potentials_f.h"
+#include "mplib_f.h"
        double precision eps, L, z0, z1, z, step
        double precision pot
       integer i, N

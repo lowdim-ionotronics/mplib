@@ -1,3 +1,10 @@
+2012-05-17 version 1.6  <valiska@gmail.com>
+
+	* Makefile.am: lib_LTLIBRARIES install so instead of locally
+	used static.
+
+	* potentialc.h -> mplib.h, potentials_f.h -> mplib_f.h:
+
 2011-10-17 version 1.4  <valiska@gmail.com>
 
 	* dft-u2.c: mplib_dft_u2(): u2 potential for DFT calculations

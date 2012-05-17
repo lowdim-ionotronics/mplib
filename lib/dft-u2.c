@@ -29,6 +29,8 @@
 //#define DEBUG
 #include "defines.h"
 
+#include "mplib.h"
+
 #include <stdio.h>
 #include <math.h>
 

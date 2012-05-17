@@ -19,7 +19,7 @@
 //#define DEBUG
 #include "defines.h"
 
-#include "potentials.h"
+#include "mplib.h"
 
 double mplib_potential_unary_ (double * z, double *L) 
 {
