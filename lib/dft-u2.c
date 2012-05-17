@@ -26,7 +26,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-//#define DEBUG
+#define DEBUG
 #include "defines.h"
 
 #include "mplib.h"
@@ -38,7 +38,8 @@
 #include <gsl/gsl_sf_bessel.h>
 #include <gsl/gsl_integration.h>
 
-#define EPS_SUM   1.e-50
+#define EPS_SUM   1.e-20
+#define R_MAX     50.0
 #define pow2(x)         ( (x) * (x) )
 
 // The sum and the integral representation of a potential
@@ -105,6 +106,10 @@ static double inline sum (double z1, double z2, double R)
 	DPRINT ("mplib_dft_u2(): sum(): z1=%g, z2=%g, R=%g\n", z1, z2, R);
 
 	void * p[] = {&z1, &z2, &R};
+
+	DPRINT("R=%e vs Rmax=%e\n", R, R_MAX);
+	if (R > R_MAX)
+	    return 0.0;
 
 	for (i = 0; i < N; i++)
 	{

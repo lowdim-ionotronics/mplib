@@ -1,3 +1,7 @@
+2012-05-17 23:00 BST  version 1.6  <valiska@gmail.com>
+
+	* dft-u2.c: check if R is not too large for underflows.
+
 2012-05-17 version 1.6  <valiska@gmail.com>
 
 	* Makefile.am: lib_LTLIBRARIES install 'so' instead of locally
