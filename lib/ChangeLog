@@ -1,3 +1,8 @@
+2012-05-23 version 1.7.0  <valiska@gmail.com>
+
+	* ddft-Kx.c: Kx() kernel for the Jx current (with fixed b).
+	Compiles OK, tests needed.
+
 2012-05-17 23:00 BST  version 1.6  <valiska@gmail.com>
 
 	* dft-u2.c: check if R is not too large for underflows.

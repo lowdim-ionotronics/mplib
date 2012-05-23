@@ -42,9 +42,14 @@ double mplib_potential_binary (double z1, double z2, double R, double L);
 double mplib_potential_unary_ (double * z, double * L); 
 double mplib_potenial_binary_ (double * z1, double * z2, double * R, double * L);
 
-/* Potentials for DFT calculations */
+/* Potentials for DFT calculations 
+ * (see DFT notes elsewhere) */
 double mplib_dft_u1 (double z, double L, double LB);
 double mplib_dft_u2 (double z1, double z2, double L, double LB, double b);
+
+/* Propagators for Dynamical DFT calculations 
+ * (see charging/discharging notes elsewhere) */
+double mplib_ddft_Kx (double z1, double z2, double dx, double L, double LB, double b);
 
 __END_DECLS
 
