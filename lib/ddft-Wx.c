@@ -1,6 +1,6 @@
-/*  ddft-Kx.c  2012-05-23  evaluate Kx (x-x', b,..) of Jx due to the pore-screaned elecrostatic pair potential
+/*  ddft-Wx.c  2012-05-23  evaluate Wx (x-x', b,..) of Jx due to the pore-screaned elecrostatic pair potential
  *
- *  mplib_ddft_Kx (z1, z2, dx, L, LB, b) calculates the effective modified mean-field interaction potential:
+ *  mplib_ddft_Wx (z1, z2, dx, L, LB, b) calculates the effective modified mean-field interaction potential:
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,13 +33,12 @@
 #define R_MAX     50.0
 #define pow2(x)         ( (x) * (x) )
 
-/* The sum of the second term in Kx */
+/* The sum of the second term in Wx */
 static double inline sum (double z1, double z2, double dx, double yo);
 
-double mplib_ddft_Kx (double z1, double z2, double dx, double L, double LB, double b)
+double mplib_ddft_Wx (double z1, double z2, double dx, double L, double LB, double b)
 {
-
-	DPRINT ("z1=%g, z2=%g, L=%g, LB=%g, b=%g\n", z1, z2, L, LB, b);
+	DPRINT ("mplib_ddft_Wx(): z1=%g, z2=%g, dx=%g, L=%g, LB=%g, b=%g\n", z1, z2, dx, L, LB, b);
 
 	MPLIB_CRITICAL ( (z1 > 0.) && (z1 < L), "argument out of bound (z1=%g, z2=%g, L=%g)", z1, z2, L);
 	MPLIB_CRITICAL ( (z2 > 0.) && (z2 < L), "argument out of bound (z1=%g, z2=%g, L=%g)", z1, z2, L);
@@ -53,13 +52,13 @@ double mplib_ddft_Kx (double z1, double z2, double dx, double L, double LB, doub
 	if (yo2 > 0.0) 
 	{	
 		yo = sqrt (yo2);
-		/* 1/L is included in potential_binary 
+		/* 4/L is included in potential_binary 
 		 * NOTE: z1 and z2 are not normalized to L as we use functions for MC simulation */
-		K1 = 16. * LB * dx * mplib_potential_binary (z1, z2, b, L);
+		K1 = 4. * LB * dx * mplib_potential_binary (z1, z2, b, L) / yo;
 	}
 
 	/* NOTE: z1, z2, dx and yo are normalized, functions are below */
-	K2 = - 16. * M_PI * LB * dx / pow2(L) * sum (z1/L, z2/L, dx/L, yo/L);
+	K2 = - 16. * M_PI * LB * dx * sum (z1/L, z2/L, dx/L, yo/L) / (pow2(L)) ;
 
 	return K1 + K2;
 }
@@ -81,14 +80,14 @@ static double fn (int n, void * params) {
 	double dx = *( (double*) p[2]);
 	double yo = *( (double*) p[3]);
 
-	DPRINT ("z1=%g, z2=%g, dx=%g, yo=%g\n", z1, z2, dx, yo);
+	DPRINT ("Wx::fn(): z1=%g, z2=%g, dx=%g, yo=%g\n", z1, z2, dx, yo);
 
 	double s1 = sin (M_PI * (double) n * z1);
 	double s2 = sin (M_PI * (double) n * z2);
 	double In = integral ((double) n, dx, yo);
 
 	double Sn = In * s1 * s2 * (double) n;
-	DPRINT ("n=%i: sin(z1)=%g, sin(z2)=%g, K0=%g, Sn=%g\n", n, s1, s2, In, Sn);
+	DPRINT ("Wx::fn()n=%i: sin(z1)=%g, sin(z2)=%g, K0=%g, Sn=%g\n", n, s1, s2, In, Sn);
 
 	return Sn;
 }
@@ -100,7 +99,7 @@ static double inline sum (double z1, double z2, double dx, double yo)
 	double result, error;
 	double s[N];
 
-	DPRINT ("mplib_ddft_Kx(): sum(): z1=%g, z2=%g, dx=%g yo=%g\n", z1, z2, dx, yo);
+	DPRINT ("Wx::sum(): z1=%g, z2=%g, dx=%g yo=%g\n", z1, z2, dx, yo);
 
 	void * p[] = {&z1, &z2, &dx, &yo};
 
@@ -146,12 +145,15 @@ static double f (double y, void * params) {
 	double n = *((double *) p[0]);
 	double dx = *((double *) p[1]);
 
-	DPRINT ("f(): n=%g, dx = %g", n, dx);
-
 	double R = sqrt (pow2(dx) + pow2 (y));
-	double f = gsl_sf_bessel_K1 (M_PI * n * R) / R;
+	DPRINT ("Wx::f(): n=%g, dx=%g, y=%g, R=%g, ", n, dx, y, R);
 
-	DPRINT ("%g\n", f);
+	double f = 0;
+	
+	if ( (R < R_MAX) && (R != 0.0) )
+		f = gsl_sf_bessel_K1 (M_PI * n * R) / R;
+
+	DPRINT ("f=%g\n", f);
 
 	return f;
 }
@@ -163,19 +165,19 @@ static double inline integral (double n, double dx, double yo)
 		= gsl_integration_workspace_alloc (10000);
 	MPLIB_CRITICAL (w, "Cannot allocate the workspace for the integration");
 
-	DPRINT ("integral(): n=%g, dx=%g, yo=%g\n", n, dx, yo);
+	DPRINT ("Wx::integral(): n=%g, dx=%g, yo=%g\n", n, dx, yo);
 
 	double result, error;
 
 	gsl_function F;
 	F.function = &f;
 
-	void * p[] = {&n, &dx};
+	void * p[2] = {&n, &dx};
 	F.params = (void*) p;
 
 	gsl_integration_qagiu (&F, yo, 1.e-7, 1e-7, 10000, w, &result, &error); 
 
-	DPRINT ("integral(): % .18f\n", result);
+	DPRINT ("Wx::integral(): % .18f\n", result);
 	DPRINT ("\testimated error = % .18f\n", error);
 	DPRINT ("\tintervals =  %d\n", w->size);
 

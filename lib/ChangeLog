@@ -1,5 +1,11 @@
-2012-05-23 version 1.7.0  <valiska@gmail.com>
+2012-06-14 version 1.7.2  <valiska@gmail.com>
 
+	* ddft-Kx.c -> ddft-Wx.c: 
+
+	* ddft-W.c: W(dx, b, L, LB) = delta H / delta rho.
+
+2012-05-23 version 1.7.0  <valiska@gmail.com>
+ 
 	* ddft-Kx.c: Kx() kernel for the Jx current (with fixed b).
 	Compiles OK, tests needed.
 

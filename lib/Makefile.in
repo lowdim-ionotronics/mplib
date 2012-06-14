@@ -71,7 +71,7 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgincludedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libmplib_la_LIBADD =
 am_libmplib_la_OBJECTS = u1.lo u2.lo potentials_f.lo dft-u1.lo \
-	dft-u2.lo ddft-Kx.lo
+	dft-u2.lo ddft-W.lo ddft-Wx.lo
 libmplib_la_OBJECTS = $(am_libmplib_la_OBJECTS)
 libmplib_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
@@ -225,7 +225,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libmplib.la
-libmplib_la_SOURCES = u1.c  u2.c potentials_f.c dft-u1.c dft-u2.c ddft-Kx.c
+libmplib_la_SOURCES = u1.c  u2.c potentials_f.c dft-u1.c dft-u2.c ddft-W.c ddft-Wx.c
 libmplib_la_LDFLAGS = -version-info @MPLIB_LT_VERSION@
 pkginclude_HEADERS = mplib.h mplib_f.h
 INCLUDES = -I$(top_srcdir)/src   @GSL_INCLUDES@
@@ -306,7 +306,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ddft-Kx.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ddft-W.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ddft-Wx.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dft-u1.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dft-u2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/potentials_f.Plo@am__quote@

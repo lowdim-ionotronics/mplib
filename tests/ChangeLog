@@ -1,3 +1,8 @@
+2012-06-14 version 1.7.2  <valiska@gmail.com>
+
+	* c: test-ddft-W.c: program to check ddft_W() and ddft-Wx().
+	Tests seem OK.
+
 2011-10-17 version 1.4  <valiska@gmail.com>
 
 	* c: test-dft-u2.c: checking the dft_u2(). Tests seem OK,

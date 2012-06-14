@@ -35,7 +35,8 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 noinst_PROGRAMS = test-u1$(EXEEXT) test-u2$(EXEEXT) \
-	test-dft-u2$(EXEEXT)
+	test-dft-u2$(EXEEXT) test-ddft-Kx$(EXEEXT) \
+	test-ddft-W$(EXEEXT)
 subdir = tests/c
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -47,6 +48,12 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
+am_test_ddft_Kx_OBJECTS = test-ddft-Kx.$(OBJEXT)
+test_ddft_Kx_OBJECTS = $(am_test_ddft_Kx_OBJECTS)
+test_ddft_Kx_DEPENDENCIES = $(top_srcdir)/lib/libmplib.la
+am_test_ddft_W_OBJECTS = test-ddft-W.$(OBJEXT)
+test_ddft_W_OBJECTS = $(am_test_ddft_W_OBJECTS)
+test_ddft_W_DEPENDENCIES = $(top_srcdir)/lib/libmplib.la
 am_test_dft_u2_OBJECTS = test-dft-u2.$(OBJEXT)
 test_dft_u2_OBJECTS = $(am_test_dft_u2_OBJECTS)
 test_dft_u2_DEPENDENCIES = $(top_srcdir)/lib/libmplib.la
@@ -69,9 +76,10 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(test_dft_u2_SOURCES) $(test_u1_SOURCES) $(test_u2_SOURCES)
-DIST_SOURCES = $(test_dft_u2_SOURCES) $(test_u1_SOURCES) \
-	$(test_u2_SOURCES)
+SOURCES = $(test_ddft_Kx_SOURCES) $(test_ddft_W_SOURCES) \
+	$(test_dft_u2_SOURCES) $(test_u1_SOURCES) $(test_u2_SOURCES)
+DIST_SOURCES = $(test_ddft_Kx_SOURCES) $(test_ddft_W_SOURCES) \
+	$(test_dft_u2_SOURCES) $(test_u1_SOURCES) $(test_u2_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -213,6 +221,10 @@ test_u2_SOURCES = test-u2.c
 test_u2_LDADD = $(top_srcdir)/lib/libmplib.la
 test_dft_u2_SOURCES = test-dft-u2.c
 test_dft_u2_LDADD = $(top_srcdir)/lib/libmplib.la
+test_ddft_Kx_SOURCES = test-ddft-Kx.c
+test_ddft_Kx_LDADD = $(top_srcdir)/lib/libmplib.la
+test_ddft_W_SOURCES = test-ddft-W.c
+test_ddft_W_LDADD = $(top_srcdir)/lib/libmplib.la
 all: all-am
 
 .SUFFIXES:
@@ -256,6 +268,12 @@ clean-noinstPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
+test-ddft-Kx$(EXEEXT): $(test_ddft_Kx_OBJECTS) $(test_ddft_Kx_DEPENDENCIES) 
+	@rm -f test-ddft-Kx$(EXEEXT)
+	$(LINK) $(test_ddft_Kx_OBJECTS) $(test_ddft_Kx_LDADD) $(LIBS)
+test-ddft-W$(EXEEXT): $(test_ddft_W_OBJECTS) $(test_ddft_W_DEPENDENCIES) 
+	@rm -f test-ddft-W$(EXEEXT)
+	$(LINK) $(test_ddft_W_OBJECTS) $(test_ddft_W_LDADD) $(LIBS)
 test-dft-u2$(EXEEXT): $(test_dft_u2_OBJECTS) $(test_dft_u2_DEPENDENCIES) 
 	@rm -f test-dft-u2$(EXEEXT)
 	$(LINK) $(test_dft_u2_OBJECTS) $(test_dft_u2_LDADD) $(LIBS)
@@ -272,6 +290,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-ddft-Kx.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-ddft-W.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-dft-u2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-u1.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-u2.Po@am__quote@

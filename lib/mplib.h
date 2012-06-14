@@ -49,7 +49,9 @@ double mplib_dft_u2 (double z1, double z2, double L, double LB, double b);
 
 /* Propagators for Dynamical DFT calculations 
  * (see charging/discharging notes elsewhere) */
-double mplib_ddft_Kx (double z1, double z2, double dx, double L, double LB, double b);
+/* this is \partial H_{el} / \partial \rho_pm without grad (for testing) */
+double mplib_ddft_W (double z1, double z2, double dx, double L, double LB, double b);
+double mplib_ddft_Wx (double z1, double z2, double dx, double L, double LB, double b);
 
 __END_DECLS
 
