@@ -2,15 +2,15 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT(mplib, 1.7.4, valiska@gmail.com)
+AC_INIT(mplib, 1.7.5, valiska@gmail.com)
 AC_CONFIG_SRCDIR([lib/u1.c])
 AC_CONFIG_HEADER([config.h])
 
 PACKAGE=mplib
-VERSION=1.7.4
+VERSION=1.7.5
 
 dnl IFACE_NUMBER (current) : REV : AGE (< IFACE_NUMBER)
-MPLIB_LT_VERSION="8:4:1"
+MPLIB_LT_VERSION="8:5:1"
 AC_SUBST(MPLIB_LT_VERSION)
 
 AC_SUBST(PACKAGE)

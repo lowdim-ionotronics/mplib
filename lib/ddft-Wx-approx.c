@@ -30,9 +30,9 @@
 #include <gsl/gsl_integration.h>
 
 /* The sum of the second term in Wx */
-static double inline sum (double z1, double z2, double dx, double yo);
+static double inline integral (double dx, double yo);
 
-double mplib_ddft_Wx (double z1, double z2, double dx, double L, double LB, double b)
+double mplib_ddft_Wx_approx (double z1, double z2, double dx, double L, double LB, double b)
 {
 	DPRINT ("mplib_ddft_Wx(): z1=%g, z2=%g, dx=%g, L=%g, LB=%g, b=%g\n", z1, z2, dx, L, LB, b);
 
@@ -50,82 +50,17 @@ double mplib_ddft_Wx (double z1, double z2, double dx, double L, double LB, doub
 		yo = sqrt (yo2);
 		/* 4/L is included in potential_binary 
 		 * NOTE: z1 and z2 are not normalized to L as we use functions for MC simulation */
-		K1 = 4. * LB * dx * mplib_potential_binary (z1, z2, b, L) / yo;
+		K1 = 4. * LB * dx * mplib_potential_binary_approx (z1, z2, b, L) / yo;
 	}
 
 	/* NOTE: z1, z2, dx and yo are normalized, functions are below */
-	K2 = - 16. * M_PI * LB * dx * sum (z1/L, z2/L, dx/L, yo/L) / (pow2(L)) ;
+	K2 = - 16. * M_PI * LB * dx * integral (dx/L, yo/L) * sin (M_PI * z1/L) * sin (M_PI * z2 / L) / (pow2(L)) ;
 
 	return K1 + K2;
 }
 
-/*****************************
- * The sum  *
- * ***************************/
-
-/* declare I_n(dx, y)*/
-static double inline integral (double n, double dx, double yo);
-
-/* undersum function */
-static double fn (int n, void * params) {
-
-	void ** p = (void*) params;
-	double z1 = *((double *) p[0]);
-	double z2 = *((double *) p[1]);
-
-	double dx = *( (double*) p[2]);
-	double yo = *( (double*) p[3]);
-
-	DPRINT ("Wx::fn(): z1=%g, z2=%g, dx=%g, yo=%g\n", z1, z2, dx, yo);
-
-	double s1 = sin (M_PI * (double) n * z1);
-	double s2 = sin (M_PI * (double) n * z2);
-	double In = integral ((double) n, dx, yo);
-
-	double Sn = In * s1 * s2 * (double) n;
-	DPRINT ("Wx::fn()n=%i: sin(z1)=%g, sin(z2)=%g, K0=%g, Sn=%g\n", n, s1, s2, In, Sn);
-
-	return Sn;
-}
-/* The sum (rescaled arguments!) */
-static double inline sum (double z1, double z2, double dx, double yo)
-{
-
-	int N = 100, i;
-	double result, error;
-	double s[N];
-
-	DPRINT ("Wx::sum(): z1=%g, z2=%g, dx=%g yo=%g\n", z1, z2, dx, yo);
-
-	void * p[] = {&z1, &z2, &dx, &yo};
-
-	for (i = 0; i < N; i++)
-	{
-		s[i] = fn (i + 1, p);
-		if (fabs(s[i]) < EPS_SUM)
-			break;
-	}
-	N = i;
-
-	if (N < 2) 
-	{
-		N = 2;
-		s[0] =  fn (1, p);
-		s[1] =  fn (2, p);
-
-	}
-
-	gsl_sum_levin_u_workspace * w = gsl_sum_levin_u_alloc (N);
-	MPLIB_CRITICAL (w, "Cannot allocate the workspace for the sum");
-
-	gsl_sum_levin_u_accel (s, N, w, &result, &error);
-
-	DPRINT ("results=%g (term-by-term=%g), error=%g\n", result, w->sum_plain, error);
-
-	gsl_sum_levin_u_free (w);
-
-	return result;
-}
+/* declare I_n(dx, y) for n = 1 */
+static double inline integral (double dx, double yo);
 
 /*
  * Evaluate the integral
@@ -134,12 +69,10 @@ static double inline sum (double z1, double z2, double dx, double yo)
  */
 
 /* integrand */
-static double f (double y, void * params) {
+static double f (double y, void * params) 
+{
 
-	void ** p = (void*) params;
-
-	double n = *((double *) p[0]);
-	double dx = *((double *) p[1]);
+	double dx = *((double *) params);
 
 	double R = sqrt (pow2(dx) + pow2 (y));
 	DPRINT ("Wx::f(): n=%g, dx=%g, y=%g, R=%g, ", n, dx, y, R);
@@ -147,7 +80,11 @@ static double f (double y, void * params) {
 	double f = 0;
 	
 	if ( (R < R_MAX) && (R != 0.0) )
-		f = gsl_sf_bessel_K1 (M_PI * n * R) / R;
+#if defined(_MPLIB_APPROX_USE_BESSEL_)
+		f = gsl_sf_bessel_K1 (M_PI * R) / R;
+#else
+#   error MPLIB_APPROX not chosen or not implemented
+#endif
 
 	DPRINT ("f=%g\n", f);
 
@@ -155,7 +92,7 @@ static double f (double y, void * params) {
 }
 
 /* Use GSL integrator */
-static double inline integral (double n, double dx, double yo)
+static double inline integral (double dx, double yo)
 {
 	gsl_integration_workspace * w 
 		= gsl_integration_workspace_alloc (10000);
@@ -167,9 +104,7 @@ static double inline integral (double n, double dx, double yo)
 
 	gsl_function F;
 	F.function = &f;
-
-	void * p[2] = {&n, &dx};
-	F.params = (void*) p;
+	F.params = &dx;
 
 	gsl_integration_qagiu (&F, yo, 1.e-7, 1e-7, 10000, w, &result, &error); 
 

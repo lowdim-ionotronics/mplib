@@ -71,7 +71,12 @@ static double f (double y, void * params) {
 	double f = 0.;
 	
 	if ( (R < R_MAX) && (R != 0.0) )
+#if defined(_MPLIB_APPROX_USE_BESSEL_)
 		f = gsl_sf_bessel_K0 (M_PI *  R);
+#else
+#   error MPLIB_APPROX not chosen or not implemented
+#endif
+
 
 	DPRINT ("f=%g\n", f);
 

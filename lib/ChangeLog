@@ -1,4 +1,12 @@
-2012-08-12 version 1.7.3  <valiska@gmail.com>
+2012-08-11 21:00 BST  version 1.7.5  <valiska@gmail.com>
+
+	* ddft-Wx-approx.c: mplib_ddft_Wx_approx(). Tests needed!
+
+2012-08-11 21:00 BST  version 1.7.4  <valiska@gmail.com>
+
+	* ddft-W-approx.c: mplib_ddft_W_approx().
+
+2012-08-11 version 1.7.3  <valiska@gmail.com>
 
 	* u2-approx.c: mplib_dft_u2_approx().
 
