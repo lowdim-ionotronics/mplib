@@ -19,4 +19,3 @@ test_ddft_Kx_LDADD = $(top_srcdir)/lib/libmplib.la
 
 test_ddft_W_SOURCES = test-ddft-W.c
 test_ddft_W_LDADD = $(top_srcdir)/lib/libmplib.la
-

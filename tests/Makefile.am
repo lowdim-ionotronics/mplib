@@ -1,1 +1,3 @@
 SUBDIRS = c fortran
+
+EXTRA_DIST = BUGS

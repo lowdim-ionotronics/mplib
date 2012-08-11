@@ -51,7 +51,6 @@ __BEGIN_DECLS
 /* maximum value of R above which Kn(piR/L) is zero */
 #define R_MAX     50.0
 
-
 __END_DECLS
 
 #endif 

@@ -1,4 +1,6 @@
-/*  ddft-W.c  2012-05-23  evaluate W (x-x', b,..) of in Wx = grad W() 
+/*  ddft-W-approx.c  2012-08-11  evaluate W (x-x', b,..) of in Wx = grad W() using approximate potential
+ *
+ *  mplib_ddft_Kx (z1, z2, dx, L, LB, b) calculates the effective modified mean-field interaction potential:
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,10 +29,10 @@
 #include <gsl/gsl_sf_bessel.h>
 #include <gsl/gsl_integration.h>
 
-/* The sum of the second term in Kx */
-static double inline sum (double z1, double z2, double dx, double yo);
+/* declare I_n(dx, yo) for n = 1 */
+static double inline integral (double dx, double yo);
 
-double mplib_ddft_W (double z1, double z2, double dx, double L, double LB, double b)
+double mplib_ddft_W_approx (double z1, double z2, double dx, double L, double LB, double b)
 {
 	DPRINT ("mplib_ddft_W(): z1=%g, z2=%g, dx=%g, L=%g, LB=%g, b=%g\n", z1, z2, dx, L, LB, b);
 
@@ -47,77 +49,9 @@ double mplib_ddft_W (double z1, double z2, double dx, double L, double LB, doubl
 		yo = sqrt (yo2);
 
 	/* NOTE: z1, z2, dx and yo are normalized, functions are below */
-	W = 16. * LB * sum (z1/L, z2/L, dx/L, yo/L);
+	W = 16. * LB * integral (dx/L, yo/L) * sin (M_PI * z1/L) * sin (M_PI * z2/L);
 
 	return W;
-}
-
-/*****************************
- * The sum  *
- * ***************************/
-
-/* declare I_n(dx, yo)*/
-static double inline integral (double n, double dx, double yo);
-
-/* undersum function */
-static double fn (int n, void * params) 
-{
-	void ** p = (void*) params;
-	double z1 = *((double *) p[0]);
-	double z2 = *((double *) p[1]);
-
-	/* in the sum both dx and yo are scalled by L */
-	double dx = *( (double*) p[2]);
-	double yo = *( (double*) p[3]);
-
-	DPRINT ("W::fn(): z1=%g, z2=%g, dx=%g, yo=%g\n", z1, z2, dx, yo);
-
-	double s1 = sin (M_PI * (double) n * z1);
-	double s2 = sin (M_PI * (double) n * z2);
-	double In = integral ((double) n, dx, yo);
-
-	double Sn = In * s1 * s2;
-	DPRINT ("W::fn()n=%i: sin(z1)=%g, sin(z2)=%g, K0=%g, Sn=%g\n", n, s1, s2, In, Sn);
-
-	return Sn;
-}
-/* The sum (rescaled arguments!) */
-static double inline sum (double z1, double z2, double dx, double yo)
-{
-	int N = 100, i;
-	double result, error;
-	double s[N];
-
-	DPRINT ("W::sum(): z1=%g, z2=%g, dx=%g yo=%g\n", z1, z2, dx, yo);
-
-	void * p[] = {&z1, &z2, &dx, &yo};
-
-	for (i = 0; i < N; i++)
-	{
-		s[i] = fn (i + 1, p);
-		if (fabs(s[i]) < EPS_SUM)
-			break;
-	}
-	N = i;
-
-	if (N < 2) 
-	{
-		N = 2;
-		s[0] =  fn (1, p);
-		s[1] =  fn (2, p);
-
-	}
-
-	gsl_sum_levin_u_workspace * w = gsl_sum_levin_u_alloc (N);
-	MPLIB_CRITICAL (w, "Cannot allocate the workspace for the sum");
-
-	gsl_sum_levin_u_accel (s, N, w, &result, &error);
-
-	DPRINT ("results=%g (term-by-term=%g), error=%g\n", result, w->sum_plain, error);
-
-	gsl_sum_levin_u_free (w);
-
-	return result;
 }
 
 /*
@@ -129,18 +63,15 @@ static double inline sum (double z1, double z2, double dx, double yo)
 /* integrand */
 static double f (double y, void * params) {
 
-	void ** p = (void*) params;
-
-	double n = *((double *) p[0]);
-	double dx = *((double *) p[1]);
+	double dx = *((double *) params);
 
 	double R = sqrt (pow2(dx) + pow2 (y));
-	DPRINT ("W::f(): n=%g, dx=%g, y=%g, R=%g, ", n, dx, y, R);
+	DPRINT ("W::f(): dx=%g, y=%g, R=%g, ", dx, y, R);
 
 	double f = 0.;
 	
 	if ( (R < R_MAX) && (R != 0.0) )
-		f = gsl_sf_bessel_K0 (M_PI * n * R);
+		f = gsl_sf_bessel_K0 (M_PI *  R);
 
 	DPRINT ("f=%g\n", f);
 
@@ -148,7 +79,7 @@ static double f (double y, void * params) {
 }
 
 /* Use GSL integrator */
-static double inline integral (double n, double dx, double yo)
+static double inline integral (double dx, double yo)
 {
 	gsl_integration_workspace * w 
 		= gsl_integration_workspace_alloc (10000);
@@ -160,9 +91,7 @@ static double inline integral (double n, double dx, double yo)
 
 	gsl_function F;
 	F.function = &f;
-
-	void * p[2] = {&n, &dx};
-	F.params = (void*) p;
+	F.params = (void*) &dx;
 
 	gsl_integration_qagiu (&F, yo, 1.e-7, 1e-7, 10000, w, &result, &error); 
 

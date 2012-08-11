@@ -1,0 +1,8 @@
+List of known bugs
+
+2012-08-11
+~~~~~~~~~~
+
+Test programs are killed on SELinux. Valgrind reports "Jump to the
+invalid address stated on the next line in sin (in /lib64/libm-2.15.so)
+
