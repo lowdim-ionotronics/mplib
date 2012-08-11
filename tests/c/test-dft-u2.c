@@ -45,12 +45,24 @@ int main (int argc, char ** argv) {
 	fprintf (stderr, "# Pore width L=%g\n", L);
 	fprintf (stderr, "# Charge is at z=%g\n", Z);
 
+#if 0
 	for (iz = 0; iz < Nz + 1; iz++) 
 	{
 		double pot = mplib_dft_u2 (z, Z, L, LB, b);
 		printf (" % e \t  % e \n", z, pot);
 		z += stepz;
 	}
+#endif
+
+	L = 0.8;
+	double stepL = (1.2 - 0.8) / Nz;
+	for (iz = 0; iz < Nz + 1; iz++) 
+	{
+		double pot = mplib_dft_u2 (0.5 * L, 0.5 * L, L, LB, b);
+		printf (" % e \t  % e \n", L, pot);
+		L += stepL;
+	}
+
 
 	return 1;
 }

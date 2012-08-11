@@ -70,8 +70,8 @@ am__base_list = \
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgincludedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libmplib_la_LIBADD =
-am_libmplib_la_OBJECTS = u1.lo u2.lo potentials_f.lo dft-u1.lo \
-	dft-u2.lo ddft-W.lo ddft-Wx.lo
+am_libmplib_la_OBJECTS = u1.lo u2.lo u2-approx.lo potentials_f.lo \
+	dft-u1.lo dft-u2.lo dft-u2-approx.lo ddft-W.lo ddft-Wx.lo
 libmplib_la_OBJECTS = $(am_libmplib_la_OBJECTS)
 libmplib_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
@@ -225,13 +225,16 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libmplib.la
-libmplib_la_SOURCES = u1.c  u2.c potentials_f.c dft-u1.c dft-u2.c ddft-W.c ddft-Wx.c
+libmplib_la_SOURCES = u1.c  u2.c u2-approx.c potentials_f.c \
+	dft-u1.c dft-u2.c dft-u2-approx.c \
+	ddft-W.c ddft-Wx.c
+
 libmplib_la_LDFLAGS = -version-info @MPLIB_LT_VERSION@
 pkginclude_HEADERS = mplib.h mplib_f.h
 INCLUDES = -I$(top_srcdir)/src   @GSL_INCLUDES@
 AM_CFLAGS = -Wall -DMPLIB_MAINTAINER=\"@MPLIB_MAINTAINER@\" 
 AM_LDFLAGS = @GSL_LIBS@ -pedantic -ansi -fwritable-strings
-EXTRA_DIST = defines.h
+EXTRA_DIST = defines.h mplib-private.h
 all: all-am
 
 .SUFFIXES:
@@ -309,9 +312,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ddft-W.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ddft-Wx.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dft-u1.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dft-u2-approx.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dft-u2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/potentials_f.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/u1.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/u2-approx.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/u2.Plo@am__quote@
 
 .c.o:

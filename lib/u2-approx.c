@@ -1,6 +1,6 @@
-/*  u2.c  2010-04-28  2body potential energy (up to a coeff)
+/*  u2-approx.c  2012-10-12  2body potential energy (up to a coeff): approximation
  *
- * Copyright (C) 2010 Svyatoslav Kondrat (Valiska)
+ * Copyright (C) 2012 Svyatoslav Kondrat (Valiska)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,23 +20,16 @@
 //#define DEBUG
 #include "defines.h"
 
-#ifdef MPLIB_USE_APPROX
-#  undef MPLIB_USE_APPROX
-#endif
 #include "mplib-private.h"
 
 #include <stdio.h>
 #include <math.h>
 
-#include <gsl/gsl_sum.h>
-#include <gsl/gsl_sf_bessel.h>
 #include <gsl/gsl_integration.h>
 
-// The sum and the integral representation of a potential
-static double inline sum (double z1, double z2, double R);
 static double inline integral (double z1, double z2);
 
-double mplib_potential_binary (double z1, double z2, double R, double L) 
+double mplib_potential_binary_approx (double z1, double z2, double R, double L) 
 {
 	// rescale arguments
         z1 /= L;
@@ -49,11 +42,19 @@ double mplib_potential_binary (double z1, double z2, double R, double L)
 	MPLIB_CRITICAL ( (z2 > 0.) && (z2 < 1.), "argument out of bound");
 	MPLIB_CRITICAL ( R >= 0.0, "argument out of bound");
 
-	// Calculate as an integral or as a sum 
-	// depending on the aruments
+	/* Use integral _only_ when R = 0
+	 * FIXME: use approximation for R=0 as well? */
 	if (R != 0.0)
 //	if (R > EPS_R)
-		return (4. / L) * sum (z1, z2, R);
+
+#ifdef _MPLIB_APPROX_USE_EXPANSION_
+		return (1. / L * sqrt(2. * R)) * exp (- M_PI * R) * sin (M_PI * z1) * sin (M_PI * z2);
+#elif defined(_MPLIB_APPROX_USE_BESSEL_)
+		return (4. / L ) * gsl_sf_bessel_K0 ( M_PI * R) * sin (M_PI * z1) * sin (M_PI * z2);
+#else
+#  error MPLIB_APPROX not chosen
+#endif
+
 	else 
 	{
 		MPLIB_WARNING ("R=0.0, using the integral representation");
@@ -61,71 +62,9 @@ double mplib_potential_binary (double z1, double z2, double R, double L)
 	}
 }
 
-/*****************************
- * The sum and the integral  *
- * ***************************/
-
-/* undersum function */
-static double fn (int n, void * params) {
-
-	void ** p = (void*) params;
-	double z1 = *((double *) p[0]);
-	double z2 = *((double *) p[1]);
-
-	double R = *( (double*) p[2]);
-
-	DPRINT ("z1=%g, z2=%g, R=%g\n", z1, z2, R);
-
-	double s1 = sin (M_PI * (double) n * z1);
-	double s2 = sin (M_PI * (double) n * z2);
-
-	double x = M_PI * (double) n * R;
-	double K = gsl_sf_bessel_K0 (x);
-
-	double Sn = K * s1 * s2;
-	DPRINT ("n=%i: sin(z1)=%g, sin(z2)=%g, K0=%g, Sn=%g\n", n, s1, s2, K, Sn);
-
-	return Sn;
-}
-/* The sum (rescaled arguments!) */
-static double inline sum (double z1, double z2, double R)
-{
-
-	int N = 100, i;
-	double result, error;
-	double s[N];
-
-	DPRINT ("mplib_potential_binary_sum(): sum(): z1=%g, z2=%g, R=%g\n", z1, z2, R);
-
-	void * p[] = {&z1, &z2, &R};
-
-	for (i = 0; i < N; i++)
-	{
-		s[i] = fn (i + 1, p);
-		if (fabs(s[i]) < EPS_SUM)
-			break;
-	}
-	N = i;
-
-	if (N < 2) 
-	{
-		N = 2;
-		s[0] =  fn (1, p);
-		s[1] =  fn (2, p);
-
-	}
-
-	gsl_sum_levin_u_workspace * w = gsl_sum_levin_u_alloc (N);
-	MPLIB_CRITICAL (w, "Cannot allocate the workspace for the sum");
-
-	gsl_sum_levin_u_accel (s, N, w, &result, &error);
-
-	DPRINT ("results=%g (term-by-term=%g), error=%g\n", result, w->sum_plain, error);
-
-	gsl_sum_levin_u_free (w);
-
-	return result;
-}
+/*********************
+ * The the integral  *
+ * *******************/
 
 /* integrand */
 static double f (double Q, void * params) {

@@ -1,3 +1,13 @@
+2012-08-12 version 1.7.3  <valiska@gmail.com>
+
+	* u2-approx.c: mplib_dft_u2_approx().
+
+	* u2-approx.c: mplib_potential_binary_approx().
+
+	* mplib.h: MPLIB_USE_APPROX, 
+
+	* mplib-private.h: private defs.
+
 2012-06-14 version 1.7.2  <valiska@gmail.com>
 
 	* ddft-Kx.c -> ddft-Wx.c: 
