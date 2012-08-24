@@ -34,15 +34,19 @@ AC_PROG_LIBTOOL
 #
 # GNU Scientific Library
 #
-AM_PATH_GSL(1.3, AC_DEFINE_UNQUOTED([GSL_VERSION],
-                    "`$ac_cv_path_GSL_CONFIG --version`" , [GSL version we use to compile this package]),
-  AC_MSG_ERROR([gsl is missing. You need gsl to compile this package.
-      See http://www.gnu.org/software/gsl/])
-)
-if test "x$GSL_CONFIG" = x; then
-  GSL_CONFIG=gsl-config
-fi
-                                                                                                                 
+#AM_PATH_GSL(1.3, AC_DEFINE_UNQUOTED([GSL_VERSION],
+#                    "`$ac_cv_path_GSL_CONFIG --version`" , [GSL version we use to compile this package]),
+#  AC_MSG_ERROR([gsl is missing. You need gsl to compile this package.
+#      See http://www.gnu.org/software/gsl/])
+#)
+
+AC_ARG_WITH(gsl,
+            [  --with-gsl=DIR        Directory where the GSL is installed (optional)],
+            GSL_DIR="$withval")
+
+GSL_CONFIG=
+AC_PATH_PROG([GSL_CONFIG], [gsl-config],, [$GSL_DIR/bin:$PATH])
+                                                                                                                
 GSL_INCLUDES=
 GSL_LIBS=
                                                                                                                  

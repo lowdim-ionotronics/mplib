@@ -618,9 +618,8 @@ LTLIBOBJS
 LIBOBJS
 MPLIB_LIBS
 MPLIB_CFLAGS
-GSL_INCLUDES
 GSL_LIBS
-GSL_CFLAGS
+GSL_INCLUDES
 GSL_CONFIG
 CXXCPP
 CPP
@@ -665,6 +664,7 @@ CXX
 am__fastdepCC_FALSE
 am__fastdepCC_TRUE
 CCDEPMODE
+am__nodep
 AMDEPBACKSLASH
 AMDEP_FALSE
 AMDEP_TRUE
@@ -752,9 +752,7 @@ enable_fast_install
 with_gnu_ld
 with_sysroot
 enable_libtool_lock
-with_gsl_prefix
-with_gsl_exec_prefix
-enable_gsltest
+with_gsl
 enable_optimize
 enable_assertions
 '
@@ -1400,7 +1398,6 @@ Optional Features:
   --enable-fast-install[=PKGS]
                           optimize for fast installation [default=yes]
   --disable-libtool-lock  avoid locking (might break parallel builds)
-  --disable-gsltest       Do not try to compile and run a test GSL program
   --enable-optimize       disable debugging (removes -g flags) and set
                           optimization level O3 (disabled)
   --disable-assertions    disable all assertions (enabled)
@@ -1413,8 +1410,7 @@ Optional Packages:
   --with-gnu-ld           assume the C compiler uses GNU ld [default=no]
   --with-sysroot=DIR Search for dependent libraries within DIR
                         (or the compiler's sysroot if not specified).
-  --with-gsl-prefix=PFX   Prefix where GSL is installed (optional)
-  --with-gsl-exec-prefix=PFX Exec prefix where GSL is installed (optional)
+  --with-gsl=DIR        Directory where the GSL is installed (optional)
 
 Some influential environment variables:
   CC          C compiler command
@@ -2839,11 +2835,11 @@ MAKEINFO=${MAKEINFO-"${am_missing_run}makeinfo"}
 
 # We need awk for the "check" target.  The system "awk" is bad on
 # some platforms.
-# Always define AMTAR for backward compatibility.
+# Always define AMTAR for backward compatibility.  Yes, it's still used
+# in the wild :-(  We should find a proper way to deprecate it ...
+AMTAR='$${TAR-tar}'
 
-AMTAR=${AMTAR-"${am_missing_run}tar"}
-
-am__tar='${AMTAR} chof - "$$tardir"'; am__untar='${AMTAR} xf -'
+am__tar='$${TAR-tar} chof - "$$tardir"' am__untar='$${TAR-tar} xf -'
 
 
 
@@ -3695,6 +3691,7 @@ fi
 if test "x$enable_dependency_tracking" != xno; then
   am_depcomp="$ac_aux_dir/depcomp"
   AMDEPBACKSLASH='\'
+  am__nodep='_no'
 fi
  if test "x$enable_dependency_tracking" != xno; then
   AMDEP_TRUE=
@@ -3719,6 +3716,7 @@ else
   # instance it was reported that on HP-UX the gcc test will end up
   # making a dummy file named `D' -- because `-MD' means `put the output
   # in D'.
+  rm -rf conftest.dir
   mkdir conftest.dir
   # Copy depcomp to subdir because otherwise we won't find it if we're
   # using a relative directory.
@@ -3778,7 +3776,7 @@ else
 	break
       fi
       ;;
-    msvisualcpp | msvcmsys)
+    msvc7 | msvc7msys | msvisualcpp | msvcmsys)
       # This compiler won't grok `-c -o', but also, the minuso test has
       # not run yet.  These depmodes are late enough in the game, and
       # so weak that their functioning should not be impacted.
@@ -4103,6 +4101,7 @@ else
   # instance it was reported that on HP-UX the gcc test will end up
   # making a dummy file named `D' -- because `-MD' means `put the output
   # in D'.
+  rm -rf conftest.dir
   mkdir conftest.dir
   # Copy depcomp to subdir because otherwise we won't find it if we're
   # using a relative directory.
@@ -4162,7 +4161,7 @@ else
 	break
       fi
       ;;
-    msvisualcpp | msvcmsys)
+    msvc7 | msvc7msys | msvisualcpp | msvcmsys)
       # This compiler won't grok `-c -o', but also, the minuso test has
       # not run yet.  These depmodes are late enough in the game, and
       # so weak that their functioning should not be impacted.
@@ -17910,41 +17909,21 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 #
 # GNU Scientific Library
 #
+#AM_PATH_GSL(1.3, AC_DEFINE_UNQUOTED([GSL_VERSION],
+#                    "`$ac_cv_path_GSL_CONFIG --version`" , [GSL version we use to compile this package]),
+#  AC_MSG_ERROR([gsl is missing. You need gsl to compile this package.
+#      See http://www.gnu.org/software/gsl/])
+#)
 
 
-# Check whether --with-gsl-prefix was given.
-if test "${with_gsl_prefix+set}" = set; then :
-  withval=$with_gsl_prefix; gsl_prefix="$withval"
-else
-  gsl_prefix=""
+# Check whether --with-gsl was given.
+if test "${with_gsl+set}" = set; then :
+  withval=$with_gsl; GSL_DIR="$withval"
 fi
 
 
-# Check whether --with-gsl-exec-prefix was given.
-if test "${with_gsl_exec_prefix+set}" = set; then :
-  withval=$with_gsl_exec_prefix; gsl_exec_prefix="$withval"
-else
-  gsl_exec_prefix=""
-fi
-
-# Check whether --enable-gsltest was given.
-if test "${enable_gsltest+set}" = set; then :
-  enableval=$enable_gsltest;
-else
-  enable_gsltest=yes
-fi
-
-
-  if test "x${GSL_CONFIG+set}" != xset ; then
-     if test "x$gsl_prefix" != x ; then
-         GSL_CONFIG="$gsl_prefix/bin/gsl-config"
-     fi
-     if test "x$gsl_exec_prefix" != x ; then
-        GSL_CONFIG="$gsl_exec_prefix/bin/gsl-config"
-     fi
-  fi
-
-  # Extract the first word of "gsl-config", so it can be a program name with args.
+GSL_CONFIG=
+# Extract the first word of "gsl-config", so it can be a program name with args.
 set dummy gsl-config; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -17957,7 +17936,8 @@ else
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
+as_dummy="$GSL_DIR/bin:$PATH"
+for as_dir in $as_dummy
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
@@ -17971,7 +17951,6 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_GSL_CONFIG" && ac_cv_path_GSL_CONFIG="no"
   ;;
 esac
 fi
@@ -17985,185 +17964,6 @@ $as_echo "no" >&6; }
 fi
 
 
-  min_gsl_version=1.3
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for GSL - version >= $min_gsl_version" >&5
-$as_echo_n "checking for GSL - version >= $min_gsl_version... " >&6; }
-  no_gsl=""
-  if test "$GSL_CONFIG" = "no" ; then
-    no_gsl=yes
-  else
-    GSL_CFLAGS=`$GSL_CONFIG --cflags`
-    GSL_LIBS=`$GSL_CONFIG --libs`
-
-    gsl_major_version=`$GSL_CONFIG --version | \
-           sed 's/^\([0-9]*\).*/\1/'`
-    if test "x${gsl_major_version}" = "x" ; then
-       gsl_major_version=0
-    fi
-
-    gsl_minor_version=`$GSL_CONFIG --version | \
-           sed 's/^\([0-9]*\)\.\{0,1\}\([0-9]*\).*/\2/'`
-    if test "x${gsl_minor_version}" = "x" ; then
-       gsl_minor_version=0
-    fi
-
-    gsl_micro_version=`$GSL_CONFIG --version | \
-           sed 's/^\([0-9]*\)\.\{0,1\}\([0-9]*\)\.\{0,1\}\([0-9]*\).*/\3/'`
-    if test "x${gsl_micro_version}" = "x" ; then
-       gsl_micro_version=0
-    fi
-
-    if test "x$enable_gsltest" = "xyes" ; then
-      ac_save_CFLAGS="$CFLAGS"
-      ac_save_LIBS="$LIBS"
-      CFLAGS="$CFLAGS $GSL_CFLAGS"
-      LIBS="$LIBS $GSL_LIBS"
-
-      rm -f conf.gsltest
-      if test "$cross_compiling" = yes; then :
-  echo $ac_n "cross compiling; assumed OK... $ac_c"
-else
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-char* my_strdup (const char *str);
-
-char*
-my_strdup (const char *str)
-{
-  char *new_str;
-
-  if (str)
-    {
-      new_str = (char *)malloc ((strlen (str) + 1) * sizeof(char));
-      strcpy (new_str, str);
-    }
-  else
-    new_str = NULL;
-
-  return new_str;
-}
-
-int main (void)
-{
-  int major = 0, minor = 0, micro = 0;
-  int n;
-  char *tmp_version;
-
-  system ("touch conf.gsltest");
-
-  /* HP/UX 9 (%@#!) writes to sscanf strings */
-  tmp_version = my_strdup("$min_gsl_version");
-
-  n = sscanf(tmp_version, "%d.%d.%d", &major, &minor, &micro) ;
-
-  if (n != 2 && n != 3) {
-     printf("%s, bad version string\n", "$min_gsl_version");
-     exit(1);
-   }
-
-   if (($gsl_major_version > major) ||
-      (($gsl_major_version == major) && ($gsl_minor_version > minor)) ||
-      (($gsl_major_version == major) && ($gsl_minor_version == minor) && ($gsl_micro_version >= micro)))
-     {
-       exit(0);
-     }
-   else
-     {
-       exit(1);
-     }
-}
-
-
-_ACEOF
-if ac_fn_c_try_run "$LINENO"; then :
-
-else
-  no_gsl=yes
-fi
-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
-  conftest.$ac_objext conftest.beam conftest.$ac_ext
-fi
-
-       CFLAGS="$ac_save_CFLAGS"
-       LIBS="$ac_save_LIBS"
-     fi
-  fi
-  if test "x$no_gsl" = x ; then
-     { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-
-cat >>confdefs.h <<_ACEOF
-#define GSL_VERSION "`$ac_cv_path_GSL_CONFIG --version`"
-_ACEOF
-
-  else
-     { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-     if test "$GSL_CONFIG" = "no" ; then
-       echo "*** The gsl-config script installed by GSL could not be found"
-       echo "*** If GSL was installed in PREFIX, make sure PREFIX/bin is in"
-       echo "*** your path, or set the GSL_CONFIG environment variable to the"
-       echo "*** full path to gsl-config."
-     else
-       if test -f conf.gsltest ; then
-        :
-       else
-          echo "*** Could not run GSL test program, checking why..."
-          CFLAGS="$CFLAGS $GSL_CFLAGS"
-          LIBS="$LIBS $GSL_LIBS"
-          cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-#include <stdio.h>
-
-int
-main ()
-{
- return 0;
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-   echo "*** The test program compiled, but did not run. This usually means"
-          echo "*** that the run-time linker is not finding GSL or finding the wrong"
-          echo "*** version of GSL. If it is not finding GSL, you'll need to set your"
-          echo "*** LD_LIBRARY_PATH environment variable, or edit /etc/ld.so.conf to point"
-          echo "*** to the installed location  Also, make sure you have run ldconfig if that"
-          echo "*** is required on your system"
-	  echo "***"
-          echo "*** If you have an old version installed, it is best to remove it, although"
-          echo "*** you may also be able to get things to work by modifying LD_LIBRARY_PATH"
-else
-   echo "*** The test program failed to compile or link. See the file config.log for the"
-          echo "*** exact error that occured. This usually means GSL was incorrectly installed"
-          echo "*** or that you have moved GSL since it was installed. In the latter case, you"
-          echo "*** may want to edit the gsl-config script: $GSL_CONFIG"
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-          CFLAGS="$ac_save_CFLAGS"
-          LIBS="$ac_save_LIBS"
-       fi
-     fi
-#     GSL_CFLAGS=""
-#     GSL_LIBS=""
-     as_fn_error $? "gsl is missing. You need gsl to compile this package.
-      See http://www.gnu.org/software/gsl/" "$LINENO" 5
-
-  fi
-
-
-  rm -f conf.gsltest
-
-if test "x$GSL_CONFIG" = x; then
-  GSL_CONFIG=gsl-config
-fi
 
 GSL_INCLUDES=
 GSL_LIBS=
