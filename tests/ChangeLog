@@ -1,3 +1,7 @@
+2012-06-14 version 1.7.2  <alphal@gmail.com>
+
+	* c: test-cylindre: test program OK.
+
 2012-06-14 version 1.7.2  <valiska@gmail.com>
 
 	* c: test-ddft-W.c: program to check ddft_W() and ddft-Wx().
