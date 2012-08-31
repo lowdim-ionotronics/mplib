@@ -32,8 +32,6 @@
 #include <gsl/gsl_sf_bessel.h>
 #include <gsl/gsl_integration.h>
 
-// The sum and the integral representation of a potential
-
 static inline double Km (double r1, double r2, double z, double R, int m);
 static inline double fm (int m, void * params);
 static inline double kron(int m, int n); 

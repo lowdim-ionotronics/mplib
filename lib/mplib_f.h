@@ -26,3 +26,11 @@ c
        double precision mplib_potential_binary
 #endif
 c
+#ifdef MPLIB_HAVE_BINARY
+       double precision mplib_cylinder_u1
+#endif
+c
+#ifdef MPLIB_HAVE_BINARY
+       double precision mplib_cylinder_u2
+#endif
+c
