@@ -27,12 +27,17 @@
 
 int main (int argc, char ** argv) {
 
-
-	double r1 = 1.5; 
-	double R = 2.2;
-
-	double var = mplib_cylinder_u1 (r1, R); 
-	printf("var = % e\n", var); 
+	double idx = 0.1;
+	int i ; 	
+	double r1 = 0.; 
+	double R = 20;
+	
+	while (r1<20)
+	{ 
+		double var = mplib_cylinder_u1 (r1, R); 
+		printf(" %e  % e\n", r1, var); 
+		r1=r1+idx; 
+	}
 
 	return 1;
 }

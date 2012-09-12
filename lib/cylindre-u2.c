@@ -65,6 +65,8 @@ double mplib_cylinder_u2 (double rho1, double rho2, double phi, double z, double
 
 	gsl_sum_levin_u_free (w);
 
+        result = 2*result/R; 
+
 	return result;
 }
 

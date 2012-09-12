@@ -1,3 +1,7 @@
+2012-05-17 version 1.7  <alphalee@gmail.com>
+
+	* changed cylindre-u1 and cylindre-u2 to interface with Towhee (multiplied by a factor of 2/R where R is the pore radius 
+
 2012-05-17 version 1.6  <valiska@gmail.com>
 
 	* mplib.pc and mplib-config:

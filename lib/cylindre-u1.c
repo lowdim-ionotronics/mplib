@@ -57,9 +57,10 @@ double mplib_cylinder_u1 (double r, double R)
 
 	for (i = 0; i < M; i++)
 	{	
-		int table_length = (i == 0 ? 5 : 5 * i);
+		int table_length = (i == 0 ? 20 : 20 * i);
+		 
 		DPRINT ("table length = %i\n", table_length);
-		gsl_integration_qawo_table * table = gsl_integration_qawo_table_alloc ((double) i, 2*M_PI, GSL_INTEG_COSINE, table_length);
+		gsl_integration_qawo_table * table = gsl_integration_qawo_table_alloc ((double) i, 2*M_PI, GSL_INTEG_COSINE,table_length);
 
 		void * p[] = {&r, &R, &i, wphi, wt, table};
 		s[i] = (i == 0 ? 2 : 1) * integral_phi(p);
@@ -84,10 +85,12 @@ double mplib_cylinder_u1 (double r, double R)
 	gsl_integration_workspace_free (wt);
 	gsl_integration_workspace_free (wphi);
 
-	return result;
+	return 2*result/R;
 }
 /* the t integrand */
 
+#define TMAX    1.e+02
+#define TMIN    1.
 static double fm (double t, void * params) 
 {
 
@@ -99,12 +102,26 @@ static double fm (double t, void * params)
 	double phi = *( (double*) p[3]);
 	
 	double tR = t /R;
+	double yy = r1/R; 
 	
 	double alpha = sqrt(pow2(R)- 2*R*r1*cos(phi) + pow2(r1)); 	
+
 	DPRINT ("m=%i, t=%e, t*alpha/R =  %e, tr1/R=%e\n", m, t, t*alpha/R, t*r1/R);
+
 	double fun_m = 0.;
-	if (t < 1.e+2)
+	if ((t < TMAX) && (t > TMIN))
+	{
+		DPRINT ("Bessel In(m=%i,tR * r1=%e)=%e\n", m, tR * r1, gsl_sf_bessel_In (m, tR * r1)); 
+		DPRINT ("Bessel K0(tR * alpfa=%e)=%e\n", tR * alpha, gsl_sf_bessel_K0 (tR * alpha));
+		DPRINT ("Bessel In(m=%i,t=%e)=%e\n", m, t, gsl_sf_bessel_In (m, t)); 
+
 		fun_m = gsl_sf_bessel_In(m, tR*r1) * gsl_sf_bessel_K0(tR*alpha) / gsl_sf_bessel_In(m, t); 
+	}
+	else if (t < TMIN)
+	{
+		
+		fun_m =  gsl_sf_bessel_K0(tR*alpha) * ( pow(yy,m) + pow(t,2)*pow(yy,m)*( pow(yy,2)-1 )/( 4*(1+m) ) + pow(t,4)*pow(yy,m)*( pow(yy,2)-1 )*(pow(yy,2)*m - m + pow(yy,2) -3 ) /( 32*pow((1+m),2)*(2+m) ) );	
+	}
 
 	DPRINT ("fun_m =  %e\n", fun_m);
 	return fun_m; 
