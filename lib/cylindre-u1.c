@@ -85,7 +85,7 @@ double mplib_cylinder_u1 (double r, double R)
 	gsl_integration_workspace_free (wt);
 	gsl_integration_workspace_free (wphi);
 
-	return -2*result/R;
+	return -result/(4*M_PI*M_PI*R);
 }
 /* the t integrand */
 
