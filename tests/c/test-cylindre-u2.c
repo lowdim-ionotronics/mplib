@@ -27,14 +27,33 @@
 
 int main (int argc, char ** argv) {
 
-double rho2 = 0.7;
-double phi = 0.8*M_PI; 
-double z = 0.7;
-double R = 2;
-double r0 = 0.5;
+double z = 10;
+double R = 6.;
+/*double r0=0; */
+double r0 = 0;
+double phi = 0.; 
+double r1=0.; 
+int Nr = 5;
+int Nphi = 5;  
+double idxPHI = 2*M_PI/ (double)Nphi; 
+double idxRHO = R/ (double) Nr; 
+double ir, iphi ;
+ 
+	for (ir = 0; ir < Nr; ir++ ) 
+	{
+		for(iphi = 0; iphi < Nphi; iphi++)  
+		{
+			
+			double var = mplib_cylinder_u2(r0, r1, phi, z, R); 
+			printf("%e   %e  % e\n", r1, phi, var); 
+			phi  += idxPHI; 
+	
 
-	double var = mplib_cylinder_u2(r0, rho2,phi, z, R); 
-	printf("var = % e\n", var); 
+		}
+		r1 += idxRHO;
+		phi = 0.;
+		printf("\n"); 
+	}
 
 	return 1;
 }

@@ -71,7 +71,7 @@ double mplib_cylinder_u1 (double r, double R)
 		if (s[i] < 1.e-6)
 			break;
 	}
-	M=i; 
+	M=i+1; 
 	
 	gsl_sum_levin_u_workspace * w = gsl_sum_levin_u_alloc (M);
 	MPLIB_CRITICAL (w, "Cannot allocate the workspace for the sum");
@@ -85,7 +85,9 @@ double mplib_cylinder_u1 (double r, double R)
 	gsl_integration_workspace_free (wt);
 	gsl_integration_workspace_free (wphi);
 
-	return -result/(4*M_PI*M_PI*R);
+	/*return -result/(4 * M_PI * M_PI * R);*/
+        result = - result / (4 * M_PI * M_PI * R);
+        return result; 
 }
 /* the t integrand */
 

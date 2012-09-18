@@ -21,26 +21,27 @@
 
 #include "mplib.h"
 
-#define EPS    2.e-5
+#define EPS    2.e-2
 
 int main (int argc, char ** argv) {
 
 
-	double L = 1.0;
+	double L = 20.0;
 	double z_0 = EPS;
 	double z_1 = L - EPS;
 
-	int i, N = 100;
+	int i, N = 50;
 
 	double step = (z_1 - z_0) / ((double) N );
 	double z = z_0;
 	for (i = 0; i < N + 1; i++) 
 	{
 	        double val_c = mplib_potential_unary (z, L);
-		double val_f = mplib_potential_unary_ (&z, &L);
-		double val_dft = mplib_dft_u1 (z, L, 1.);
+		/*double val_f = mplib_potential_unary_ (&z, &L);
+		double val_dft = mplib_dft_u1 (z, L, 1.); 
 		printf (" % g \t % e  \t % e  \t  % e\n",
-			z, val_c, val_f, val_dft);
+			z, val_c, val_f, val_dft); */
+		printf (" %e  % e\n",z, val_c);
 		z += step;
 	}
 

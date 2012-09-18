@@ -22,7 +22,7 @@
 
 #include "mplib.h"
 
-#define EPS    1.e-8
+#define EPS    1.e-10
 #define pow2(x)     ( (x) * (x) )
 
 int main (int argc, char ** argv) {
@@ -30,9 +30,9 @@ int main (int argc, char ** argv) {
 	double idx = 0.1;
 	int i ; 	
 	double r1 = 0.; 
-	double R = 20;
+	double R = 6.;
 	
-	while (r1<20)
+	while (r1<R)
 	{ 
 		double var = mplib_cylinder_u1 (r1, R); 
 		printf(" %e  % e\n", r1, var); 

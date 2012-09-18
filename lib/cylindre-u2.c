@@ -36,6 +36,8 @@ static inline double Km (double r1, double r2, double z, double R, int m);
 static inline double fm (int m, void * params);
 static inline double kron(int m, int n); 
 
+#define EPS_SUM    1.e-016
+
 double mplib_cylinder_u2 (double rho1, double rho2, double phi, double z, double R) 
 {
 
@@ -51,11 +53,14 @@ double mplib_cylinder_u2 (double rho1, double rho2, double phi, double z, double
 		s[i] = (kron(i,0)+1)*fm(i, p);
 		DPRINT ("cylindre(): s[%i]=%1.10e\n", i, s[i]);
 
-		/* if (fabs(s[i]) < EPS_SUM)
-			break;*/
+/* reinstate this break clause? Alpha 18/09/2012*/
+
+		 if (fabs(s[i]) < EPS_SUM)
+			break;
 	}
-	M=i; 
-	
+	M=i + 1; 
+	DPRINT ("M=%i\n", M);	
+
 	gsl_sum_levin_u_workspace * w = gsl_sum_levin_u_alloc (M);
 	MPLIB_CRITICAL (w, "Cannot allocate the workspace for the sum");
 
@@ -105,18 +110,29 @@ static inline double Km(double r1, double r2, double z, double R, int m) {
 		{
 			n++;
 			double k_nm = gsl_sf_bessel_zero_Jnu (m, n);
+			DPRINT ("k_nm = %g \n", k_nm);
+
+			DPRINT ("k_nm*r1/R = %e", k_nm*r1/R);
+			DPRINT ("J=%e\n", gsl_sf_bessel_Jn (m, k_nm*r1/R));
+
+			DPRINT ("k_nm*r2/R = %e", k_nm*r2/R);
+			DPRINT ("J=%e\n", gsl_sf_bessel_Jn (m, k_nm*r2/R));
+
 			double a = gsl_sf_bessel_Jn (m, k_nm*r1/R) * gsl_sf_bessel_Jn(m, k_nm*r2/R)*exp(-k_nm*z/R);
+			DPRINT ("a = %g\n",a);			
 			double b = k_nm * pow2(gsl_sf_bessel_Jn(m+1, k_nm));
+			DPRINT ("b = %g\n", b);	
 			S[j] += a/b;
+			
 			//DPRINT ("Km(): k_nm = %g, n = %i, a = %g, b = %g, s = %1.10e\n", k_nm, n, a, b, S[j]);
 		}
 		//DPRINT ("Km(): S[%i] = %1.10e\n", j, S[j]);
 
-	/*	if (S[j]<1e-8)
-			break; */
+		if (S[j] < EPS_SUM)
+			break;
 	}
-	N = j;
-
+	N = j + 1;
+	DPRINT ("N=%i\n", N);
 	gsl_sum_levin_u_workspace * w = gsl_sum_levin_u_alloc (N);
 	MPLIB_CRITICAL (w, "Cannot allocate the workspace for the sum");
 
