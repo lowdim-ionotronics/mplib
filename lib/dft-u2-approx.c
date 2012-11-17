@@ -52,10 +52,14 @@ double mplib_dft_u2_approx (double z1, double z2, double L, double LB, double b)
 
 	if (Ro2 > 0.0) 
 	{	
-		double Ro = sqrt (Ro2);
+		double Ro = sqrt (Ro2) / L;
+		DPRINT("R=%e vs Rmax=%e\n", Ro, R_MAX);
+		if (Ro >= R_MAX)
+			return 0.0;
+
 #if defined(_MPLIB_APPROX_USE_BESSEL_)
 		DPRINT("Using first term in the sum: z1=%g, z2=%g, Ro = %g\n", z1, z2, Ro);
-		return 4. * LB * Ro * gsl_sf_bessel_K1 (M_PI * Ro / L) * sin (M_PI * z1 / L) * sin (M_PI * z2 / L);
+		return 4. * LB * Ro * gsl_sf_bessel_K1 (M_PI * Ro) * sin (M_PI * z1 / L) * sin (M_PI * z2 / L);
 #else
 #   error MPLIB_APPROX not chosen or not implemented
 #endif

@@ -44,6 +44,7 @@ static double inline sum (double z1, double z2, double R);
 double mplib_dft_u2 (double z1, double z2, double L, double LB, double b)
 {
 
+	fprintf (stdout, "FUCK!");
 	DPRINT ("z1=%g, z2=%g, L=%g, LB=%g, b=%g\n", z1, z2, L, LB, b);
 
 	MPLIB_CRITICAL ( (z1 > 0.) && (z1 < L), "argument out of bound (z1=%g, z2=%g, L=%g)", z1, z2, L);
@@ -104,7 +105,7 @@ static double inline sum (double z1, double z2, double R)
 	void * p[] = {&z1, &z2, &R};
 
 	DPRINT("R=%e vs Rmax=%e\n", R, R_MAX);
-	if (R > R_MAX)
+	if (R >= R_MAX)
 	    return 0.0;
 
 	for (i = 0; i < N; i++)
