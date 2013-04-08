@@ -17,7 +17,9 @@ AC_SUBST(PACKAGE)
 AC_SUBST(PACKAGE_STRING)
 AC_SUBST(VERSION)
 
-AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
+#AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
+AM_INIT_AUTOMAKE()
+
 
 dnl maintainer
 AC_SUBST(MPLIB_MAINTAINER)
@@ -27,6 +29,12 @@ MPLIB_MAINTAINER="valiska@gmail.com"
 AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_F77(gfortran)
+if( test -z $F77 )
+then
+echo "Error : Fortran compiler F77 not found."
+exit -1
+fi
+
 #AC_PROG_RANLIB
 AC_PROG_LIBTOOL
 

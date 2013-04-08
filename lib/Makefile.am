@@ -7,9 +7,9 @@ libmplib_la_LDFLAGS = -version-info @MPLIB_LT_VERSION@
 
 pkginclude_HEADERS = mplib.h mplib_f.h
 
-INCLUDES = -I$(top_srcdir)/src   @GSL_INCLUDES@
+AM_CFLAGS = -I$(top_srcdir)/src   @GSL_INCLUDES@
 
-AM_CFLAGS= -Wall -DMPLIB_MAINTAINER=\"@MPLIB_MAINTAINER@\" 
+AM_CFLAGS += -Wall -DMPLIB_MAINTAINER=\"@MPLIB_MAINTAINER@\" 
 AM_LDFLAGS = @GSL_LIBS@ -pedantic -ansi -fwritable-strings -lm
 
 EXTRA_DIST = defines.h mplib-private.h
