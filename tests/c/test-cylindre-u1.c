@@ -27,15 +27,16 @@
 
 int main (int argc, char ** argv) {
 
+	double diel = 2.0;
 	double idx = 0.1;
 	int i ; 	
 	double r1 = 0.; 
-	double R = 6.;
+	double R = 6.5;
 	
 	while (r1<R)
 	{ 
 		double var = mplib_cylinder_u1 (r1, R); 
-		printf(" %e  % e\n", r1, var); 
+		printf(" %e  % e   % e\n", r1, var, 332.0636 * 503.2166 * var / diel); 
 		r1=r1+idx; 
 	}
 
