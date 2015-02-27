@@ -27,7 +27,7 @@
 
 int main (int argc, char ** argv) {
 
-
+#if 0
 	double L = 10.0;
 
 // Box to tabulate
@@ -46,7 +46,7 @@ int main (int argc, char ** argv) {
 	double z = z0, x = x0;
 
 	printf ("# Charge is at z=%g, x=%g\n", Z, X);
-
+#endif
 #if    0
 	for (iz = 0; iz < Nz; iz++) 
 	{
@@ -83,7 +83,8 @@ int main (int argc, char ** argv) {
 		}
 		z += stepz;
 	}
-#  else
+#endif
+# if 0
 	z = Z;
 	x = x0;
 	for (ix = 0; ix < Nx; ix++) 
@@ -95,12 +96,33 @@ int main (int argc, char ** argv) {
 		{
 			double r = sqrt (pow2 (R) + pow2 (z-Z));
 			double pot = mplib_potential_binary (z, Z, R, L);
-			printf (" %e  \t  % e \t  % e\n", R, pot, 1. / r);
+			printf (" %e  \t  % e \t  % e\n", R, factor * pot, factor * 1. / r);
 		}
 	}
 
 #  endif
 #endif
+
+	double T = 400.;
+	double factor = 332.0636 * 503.2166 / T;
+
+	// Ion diameter in A
+	double R = 5.;
+	double l = R;
+	double dl = 0.1;
+	printf ("# pore width  \t  energy, kBT \t  Coulomb energy\n");
+
+	for (; l < 1.9 * R;)
+	{
+		double z = l /2.;
+		{
+			double r = sqrt (pow2 (R) + pow2 (z-z));
+			double pot = mplib_potential_binary (z, z, R, l);
+			printf (" %e  \t  % e \t  % e\n", l, factor * pot, factor * 1. / r);
+		}
+		l += dl;
+	}
+
 
 // Check what is zero
 /*

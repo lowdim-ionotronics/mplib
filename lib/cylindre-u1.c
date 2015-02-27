@@ -86,7 +86,7 @@ double mplib_cylinder_u1 (double r, double R)
 	gsl_integration_workspace_free (wphi);
 
 	/*return -result/(4 * M_PI * M_PI * R);*/
-        result = - result / (4 * M_PI * M_PI * R);
+        result = - result / (4. * M_PI * M_PI * R);
         return result; 
 }
 /* the t integrand */

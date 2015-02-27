@@ -36,7 +36,10 @@ int main (int argc, char ** argv) {
 	while (r1<R)
 	{ 
 		double var = mplib_cylinder_u1 (r1, R); 
-		printf(" %e  % e   % e\n", r1, var, 332.0636 * 503.2166 * var / diel); 
+		double var_app = mplib_cylinder_u1_approx (r1, R); 
+
+//		printf(" %e  % e   % e\n", r1, var, 332.0636 * 503.2166 * var / diel); 
+		printf(" %e  % e   % e\n", r1, var, var_app); 
 		r1=r1+idx; 
 	}
 
