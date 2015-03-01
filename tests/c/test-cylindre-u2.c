@@ -44,8 +44,10 @@ double ir, iphi ;
 		for(iphi = 0; iphi < Nphi; iphi++)  
 		{
 			
-			double var = mplib_cylinder_u2(r0, r1, phi, z, R); 
-			printf("%e   %e  % e\n", r1, phi, var); 
+			double var = mplib_cylinder_u2 (r0, r1, phi, z, R); 
+			double var_approx = mplib_cylinder_u2_approx (r0, r1, phi, z, R); 
+
+			printf("%e   %e  % e   % e   % e\n", r1, phi, var, var_approx, (var - var_approx) / var); 
 			phi  += idxPHI; 
 	
 

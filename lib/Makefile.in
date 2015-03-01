@@ -95,7 +95,7 @@ libmplib_la_LIBADD =
 am_libmplib_la_OBJECTS = u1.lo u2.lo u2-approx.lo potentials_f.lo \
 	dft-u1.lo dft-u2.lo dft-u2-approx.lo ddft-W.lo ddft-Wx.lo \
 	ddft-W-approx.lo ddft-Wx-approx.lo cylindre-u2.lo \
-	cylindre-u1.lo cylindre-u1-approx.lo
+	cylindre-u1.lo cylindre-u2-approx.lo cylindre-u1-approx.lo
 libmplib_la_OBJECTS = $(am_libmplib_la_OBJECTS)
 libmplib_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
@@ -257,7 +257,7 @@ libmplib_la_SOURCES = u1.c  u2.c u2-approx.c potentials_f.c \
 	dft-u1.c dft-u2.c dft-u2-approx.c \
 	ddft-W.c ddft-Wx.c ddft-W-approx.c ddft-Wx-approx.c\
 	cylindre-u2.c cylindre-u1.c \
-	cylindre-u1-approx.c
+	cylindre-u2-approx.c cylindre-u1-approx.c
 
 libmplib_la_LDFLAGS = -version-info @MPLIB_LT_VERSION@
 pkginclude_HEADERS = mplib.h mplib_f.h
@@ -344,6 +344,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cylindre-u1-approx.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cylindre-u1.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cylindre-u2-approx.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cylindre-u2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ddft-W-approx.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ddft-W.Plo@am__quote@

@@ -38,21 +38,32 @@ static double integral_t(double phi,void * params); /*the t integral*/
 
 static double fun_phi (double t, void * params); /*the phi integrand*/
 static double integral_phi (void * params); /*the phi integral*/
-
+#define MAX 0.9
 double mplib_cylinder_u1_approx (double r, double R) 
 {
 
 	double x = r/R;
-	MPLIB_CRITICAL (x <= 0.75, "Too close to the surface (%1.10e)< 0.75", x);
+	MPLIB_CRITICAL (x <= MAX, "Too close to the surface (%1.10e)< %g", x, MAX);
 
 	double x2 = pow2(x);
 	double x3 = x * x2;
 	double x4 = pow2 (x2);
 	
-	double result = 8.650738495182575 - 3.509006980758725 * x + 
+
+	/* double result = 8.650738495182575 - 3.509006980758725 * x + 
 			41.56937034835524 * x2 - 92.40059159564377 * x3  + 97.05413438801448 * x4;
-	/*return -result/(4 * M_PI * M_PI * R);*/
-        result = - result / (2. * M_PI * M_PI * R);
-        return result; 
+        result = - result / (2. * M_PI * M_PI * R); */
+
+	double x5 = x4 * x;
+	double x6 = pow2(x3);
+	double x7 = x6 * x;
+	double x8 = pow2 (x4);
+	double x9 = x8 * x;
+	double x10 = pow2(x5);
+
+	double result = -0.43673 + 0.0420915 * x - 1.8557 * x2 + 25.456 * x3 -201.168 * x4
+		+ 917.508 * x5 - 2561.13 * x6 + 4438.71 * x7 + -4662.53 * x8 
+		+ 2719.51 * x9 - 676.906 * x10;
+        return result / R; 
 }
 
