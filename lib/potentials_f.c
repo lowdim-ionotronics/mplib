@@ -34,12 +34,25 @@ double mplib_potential_binary_ (double * z1, double * z2, double * R, double *L)
 	return mplib_potential_binary (*z1, *z2, *R, *L);
 }
 
+/* 
+ * cylindrical pore
+ */
 double mplib_cylinder_u1_ (double * r, double * R) 
 {
 	return mplib_cylinder_u1 (*r, *R);
 }
+double mplib_cylinder_u1_approx_ (double * r, double * R) 
+{
+	return mplib_cylinder_u1_approx (*r, *R);
+}
+
 
 double mplib_cylinder_u2_ (double * rho1, double * rho2, double * phi, double * z, double * R) 
 {
 	return mplib_cylinder_u2 (*rho1, *rho2, *phi, *z,*R);
 }
+double mplib_cylinder_u2_approx_ (double * rho1, double * rho2, double * phi, double * z, double * R) 
+{
+	return mplib_cylinder_u2_approx (*rho1, *rho2, *phi, *z,*R);
+}
+
