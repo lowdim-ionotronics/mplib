@@ -61,6 +61,8 @@ double mplib_cylinder_u1_approx (double r, double R)
 	double x9 = x8 * x;
 	double x10 = pow2(x5);
 
+	//fprintf (stderr, "using 10 power approx\n");
+
 	double result = -0.43673 + 0.0420915 * x - 1.8557 * x2 + 25.456 * x3 -201.168 * x4
 		+ 917.508 * x5 - 2561.13 * x6 + 4438.71 * x7 + -4662.53 * x8 
 		+ 2719.51 * x9 - 676.906 * x10;
