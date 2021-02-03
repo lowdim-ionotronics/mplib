@@ -18,6 +18,8 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
+
 #include <math.h>
 
 #include "mplib.h"
@@ -102,7 +104,7 @@ int main (int argc, char ** argv) {
 
 #  endif
 #endif
-
+#if 0
 	double T = 400.;
 	double factor = 332.0636 * 503.2166 / T;
 
@@ -122,8 +124,71 @@ int main (int argc, char ** argv) {
 		}
 		l += dl;
 	}
+#endif
+#if 0
+//	double T = 400.;
+	double T = 298.;
+	double factor = 332.0636 * 503.2166 / T;
 
+	// Ion diameter in A
+	// double L = 6.;
+	double L = 10.;
 
+	if (argc > 1)
+		L = atof (argv[1]);
+
+	double R = 1.;
+	double r = 1.;
+	double dr = 0.1;
+
+	printf ("# R=%g, L=%g\n", R, L);
+	printf ("# r  \t  energy, kBT \t  Coulomb energy\n");
+
+	for (; r < 10 * R;)
+	{
+		double z = L /2.;
+		{
+			double pot = mplib_potential_binary (z, z, r, L);
+			printf (" %e  \t  % e \t  % e\n", r, factor * pot, factor * 1. / r);
+		}
+		r += dr;
+	}
+
+#endif
+	// Calculate as a function of diameter for a fixed L/d, in the slit center, 
+	// at a separation r=d
+#if 1
+	double T = 300.;
+	double diel = 5.;
+
+	double factor = 332.0636 * 503.2166 /  (T * diel);
+
+	// pore width to ion diameter
+	double L2d = 1.;
+
+	if (argc > 1)
+		L2d = atof (argv[1]);
+
+	printf ("# temperature: T = %g\n", T);
+	printf ("# dielectric constant: e = %g\n", diel);
+	printf ("# slit width to ion diameter: L/d = %g\n", L2d);
+	printf ("# energy is calculated in the slit center for ion separation r=d\n");
+
+	printf ("# d (ion diameter, A)  \t  slit width L (A)  \t energy (kBT)\n");
+
+	// d is ion diameter in A
+	double d= 4.;
+	double dd = 0.1;
+	for (; d < 12.;)
+	{
+		double L = L2d * d;
+		double r = d;
+		double z = L /2.;
+		double pot = mplib_potential_binary (z, z, r, L);
+		printf (" %e  \t  % e \t %e\n", d, L, factor * pot);
+		d += dd;
+	}
+#endif
 // Check what is zero
 /*
 	double R = 1.e-40;

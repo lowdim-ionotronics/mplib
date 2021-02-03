@@ -27,19 +27,22 @@
 
 int main (int argc, char ** argv) {
 
-	double diel = 2.0;
-	double idx = 0.2;
+	double diel = 2.5;
+	double idx = 0.001;
 	int i ; 	
-	double r1 = 0.; 
-	double R = 10;
-	
-	while (r1<R)
+	double r1 = 0.;
+	double R = 6.4 / 2.;
+	printf("# Dielectric constant %e \n", diel); 
+	printf("# Tube radius %g (diameter %g) \n", R, 2. * R); 
+	printf("# r (A)    U1 (1/A)    U1 (K)\n"); 
+
+	while (r1<R-5.0/2.+2.*idx)
 	{ 
 		double var = mplib_cylinder_u1 (r1, R); 
-		double var_app = mplib_cylinder_u1_approx (r1, R); 
+//		double var_app = mplib_cylinder_u1_approx (r1, R); 
 
-//		printf(" %e  % e   % e\n", r1, var, 332.0636 * 503.2166 * var / diel); 
-		printf(" %e  % e   % e    %e\n", r1, var, var_app, (var - var_app)/var); 
+		printf(" %e  % e   % e\n", r1, var, 332.0636 * 503.2166 * var / diel); 
+//		printf(" %e  % e   % e    %e\n", r1, var, var_app, (var - var_app)/var); 
 		r1=r1+idx; 
 	}
 
