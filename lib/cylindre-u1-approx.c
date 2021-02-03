@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-//#define DEBUG
+#define DEBUG
 #include "defines.h"
 
 #ifdef MPLIB_USE_APPROX
@@ -42,6 +42,7 @@ static double integral_phi (void * params); /*the phi integral*/
 double mplib_cylinder_u1_approx (double r, double R) 
 {
 
+	DPRINT("r=%f, R=%f\n", r, R);
 	double x = r/R;
 	MPLIB_CRITICAL (x <= MAX, "Too close to the surface (%1.10e)< %g", x, MAX);
 
