@@ -27,12 +27,14 @@
 
 int main (int argc, char ** argv) {
 
-double z = 10;
-double R = 6.;
+double R = 5.2/2.;
 /*double r0=0; */
 double r0 = 0;
 double phi = 0.; 
 double r1=0.; 
+
+#if 0
+double z = 10;
 int Nr = 5;
 int Nphi = 5;  
 double idxPHI = 2*M_PI/ (double)Nphi; 
@@ -56,6 +58,24 @@ double ir, iphi ;
 		phi = 0.;
 		printf("\n"); 
 	}
+#endif
+
+#if 1
+	
+	double d = 5.; // ion diameter
+	double z = d;
+	double dz = 0.1*d;
+	double zmax = 3*d;
+	for (z = d; z < zmax;) 
+	{
+		double var = mplib_cylinder_u2 (r0, r1, phi, z, R); 
+		double var_approx = mplib_cylinder_u2_approx (r0, r1, phi, z, R); 
+
+		printf("%e   %e  % e   % e\n", z, var, var_approx, (var - var_approx) / var); 
+		z  += dz; 
+	}
+
+#endif
 
 	return 1;
 }
