@@ -2,15 +2,17 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT(mplib, 1.7.5, valiska@gmail.com)
+AC_INIT(mplib, 1.8.4, valiska@gmail.com)
 AC_CONFIG_SRCDIR([lib/u1.c])
 AC_CONFIG_HEADER([config.h])
 
+AM_PATH_PYTHON([3.6])
+
 PACKAGE=mplib
-VERSION=1.7.5
+VERSION=1.8.4
 
 dnl IFACE_NUMBER (current) : REV : AGE (< IFACE_NUMBER)
-MPLIB_LT_VERSION="8:5:1"
+MPLIB_LT_VERSION="8:0:8"
 AC_SUBST(MPLIB_LT_VERSION)
 
 AC_SUBST(PACKAGE)
@@ -100,7 +102,9 @@ AC_SUBST(MPLIB_LIBS)
 AC_CONFIG_FILES([Makefile
 		mplib.pc mplib-config
 		lib/Makefile
+		python/Makefile
 		tests/Makefile
 		tests/c/Makefile
+		tests/python/Makefile
 		tests/fortran/Makefile])
 AC_OUTPUT

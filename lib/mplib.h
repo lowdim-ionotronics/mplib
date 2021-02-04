@@ -93,6 +93,11 @@ double mplib_ddft_Wx_approx (double z1, double z2, double dx, double L, double L
    double mplib_ddft_Wx (double z1, double z2, double dx, double L, double LB, double b);
 #endif /* MPLIB_USE_APPROX */
 
+double mplib_cylinder_u2 (double rho1, double rho2, double phi, double z, double R);
+double mplib_cylinder_u2_approx (double rho1, double rho2, double phi, double z, double R);
+
+double mplib_cylinder_u1 (double r1, double R); 
+double mplib_cylinder_u1_approx (double r, double R);
 __END_DECLS
 
 #endif 

@@ -132,7 +132,8 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 libmplib_la_LIBADD =
 am_libmplib_la_OBJECTS = u1.lo u2.lo u2-approx.lo potentials_f.lo \
 	dft-u1.lo dft-u2.lo dft-u2-approx.lo ddft-W.lo ddft-Wx.lo \
-	ddft-W-approx.lo ddft-Wx-approx.lo
+	ddft-W-approx.lo ddft-Wx-approx.lo cylindre-u2.lo \
+	cylindre-u1.lo cylindre-u2-approx.lo cylindre-u1-approx.lo
 libmplib_la_OBJECTS = $(am_libmplib_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -275,6 +276,11 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PYTHON = @PYTHON@
+PYTHON_EXEC_PREFIX = @PYTHON_EXEC_PREFIX@
+PYTHON_PLATFORM = @PYTHON_PLATFORM@
+PYTHON_PREFIX = @PYTHON_PREFIX@
+PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -324,9 +330,13 @@ mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
+pkgpyexecdir = @pkgpyexecdir@
+pkgpythondir = @pkgpythondir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
+pyexecdir = @pyexecdir@
+pythondir = @pythondir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
@@ -338,13 +348,14 @@ top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libmplib.la
 libmplib_la_SOURCES = u1.c  u2.c u2-approx.c potentials_f.c \
 	dft-u1.c dft-u2.c dft-u2-approx.c \
-	ddft-W.c ddft-Wx.c ddft-W-approx.c ddft-Wx-approx.c
+	ddft-W.c ddft-Wx.c ddft-W-approx.c ddft-Wx-approx.c\
+	cylindre-u2.c cylindre-u1.c \
+	cylindre-u2-approx.c cylindre-u1-approx.c
 
-libmplib_la_LDFLAGS = -version-info @MPLIB_LT_VERSION@
+libmplib_la_LDFLAGS = -version-info @MPLIB_LT_VERSION@  @GSL_LIBS@ -pedantic -ansi -fwritable-strings -lm -g
 pkginclude_HEADERS = mplib.h mplib_f.h
-AM_CFLAGS = -I$(top_srcdir)/src @GSL_INCLUDES@ -Wall \
-	-DMPLIB_MAINTAINER=\"@MPLIB_MAINTAINER@\"
-AM_LDFLAGS = @GSL_LIBS@ -pedantic -ansi -fwritable-strings -lm
+AM_CFLAGS = -Wall -DMPLIB_MAINTAINER=\"@MPLIB_MAINTAINER@\" -I$(top_srcdir)/src   @GSL_INCLUDES@
+AM_LDFLAGS = @GSL_LIBS@ -pedantic -ansi -fwritable-strings -lm -g
 EXTRA_DIST = defines.h mplib-private.h
 all: all-am
 
@@ -424,6 +435,10 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cylindre-u1-approx.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cylindre-u1.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cylindre-u2-approx.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cylindre-u2.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ddft-W-approx.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ddft-W.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ddft-Wx-approx.Plo@am__quote@

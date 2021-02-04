@@ -90,7 +90,8 @@ build_triplet = @build@
 host_triplet = @host@
 noinst_PROGRAMS = test-u1$(EXEEXT) test-u2$(EXEEXT) \
 	test-dft-u2$(EXEEXT) test-ddft-Kx$(EXEEXT) \
-	test-ddft-W$(EXEEXT)
+	test-ddft-W$(EXEEXT) test-cylindre-u2$(EXEEXT) \
+	test-cylindre-u1$(EXEEXT)
 subdir = tests/c
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -102,13 +103,19 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
-am_test_ddft_Kx_OBJECTS = test-ddft-Kx.$(OBJEXT)
-test_ddft_Kx_OBJECTS = $(am_test_ddft_Kx_OBJECTS)
-test_ddft_Kx_DEPENDENCIES = $(top_srcdir)/lib/libmplib.la
+am_test_cylindre_u1_OBJECTS = test-cylindre-u1.$(OBJEXT)
+test_cylindre_u1_OBJECTS = $(am_test_cylindre_u1_OBJECTS)
+test_cylindre_u1_DEPENDENCIES = $(top_srcdir)/lib/libmplib.la
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
+am_test_cylindre_u2_OBJECTS = test-cylindre-u2.$(OBJEXT)
+test_cylindre_u2_OBJECTS = $(am_test_cylindre_u2_OBJECTS)
+test_cylindre_u2_DEPENDENCIES = $(top_srcdir)/lib/libmplib.la
+am_test_ddft_Kx_OBJECTS = test-ddft-Kx.$(OBJEXT)
+test_ddft_Kx_OBJECTS = $(am_test_ddft_Kx_OBJECTS)
+test_ddft_Kx_DEPENDENCIES = $(top_srcdir)/lib/libmplib.la
 am_test_ddft_W_OBJECTS = test-ddft-W.$(OBJEXT)
 test_ddft_W_OBJECTS = $(am_test_ddft_W_OBJECTS)
 test_ddft_W_DEPENDENCIES = $(top_srcdir)/lib/libmplib.la
@@ -155,9 +162,11 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(test_ddft_Kx_SOURCES) $(test_ddft_W_SOURCES) \
+SOURCES = $(test_cylindre_u1_SOURCES) $(test_cylindre_u2_SOURCES) \
+	$(test_ddft_Kx_SOURCES) $(test_ddft_W_SOURCES) \
 	$(test_dft_u2_SOURCES) $(test_u1_SOURCES) $(test_u2_SOURCES)
-DIST_SOURCES = $(test_ddft_Kx_SOURCES) $(test_ddft_W_SOURCES) \
+DIST_SOURCES = $(test_cylindre_u1_SOURCES) $(test_cylindre_u2_SOURCES) \
+	$(test_ddft_Kx_SOURCES) $(test_ddft_W_SOURCES) \
 	$(test_dft_u2_SOURCES) $(test_u1_SOURCES) $(test_u2_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
@@ -255,6 +264,11 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PYTHON = @PYTHON@
+PYTHON_EXEC_PREFIX = @PYTHON_EXEC_PREFIX@
+PYTHON_PLATFORM = @PYTHON_PLATFORM@
+PYTHON_PREFIX = @PYTHON_PREFIX@
+PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -304,9 +318,13 @@ mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
+pkgpyexecdir = @pkgpyexecdir@
+pkgpythondir = @pkgpythondir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
+pyexecdir = @pyexecdir@
+pythondir = @pythondir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
@@ -315,8 +333,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CFLAGS = -I$(top_srcdir)/lib/ @GSL_INCLUDES@ -Wall \
-	-DMPLIB_MAINTAINER=\"@MPLIB_MAINTAINER@\" -g
+AM_CFLAGS = -I$(top_srcdir)/lib/  @GSL_INCLUDES@  -Wall -DMPLIB_MAINTAINER=\"@MPLIB_MAINTAINER@\"  -g
 AM_LDFLAGS = @GSL_LIBS@ -pedantic -ansi  -Wall
 test_u1_SOURCES = test-u1.c
 test_u1_LDADD = $(top_srcdir)/lib/libmplib.la
@@ -328,6 +345,10 @@ test_ddft_Kx_SOURCES = test-ddft-Kx.c
 test_ddft_Kx_LDADD = $(top_srcdir)/lib/libmplib.la
 test_ddft_W_SOURCES = test-ddft-W.c
 test_ddft_W_LDADD = $(top_srcdir)/lib/libmplib.la
+test_cylindre_u2_SOURCES = test-cylindre-u2.c
+test_cylindre_u2_LDADD = $(top_srcdir)/lib/libmplib.la
+test_cylindre_u1_SOURCES = test-cylindre-u1.c
+test_cylindre_u1_LDADD = $(top_srcdir)/lib/libmplib.la
 all: all-am
 
 .SUFFIXES:
@@ -371,6 +392,14 @@ clean-noinstPROGRAMS:
 	echo " rm -f" $$list; \
 	rm -f $$list
 
+test-cylindre-u1$(EXEEXT): $(test_cylindre_u1_OBJECTS) $(test_cylindre_u1_DEPENDENCIES) $(EXTRA_test_cylindre_u1_DEPENDENCIES) 
+	@rm -f test-cylindre-u1$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(test_cylindre_u1_OBJECTS) $(test_cylindre_u1_LDADD) $(LIBS)
+
+test-cylindre-u2$(EXEEXT): $(test_cylindre_u2_OBJECTS) $(test_cylindre_u2_DEPENDENCIES) $(EXTRA_test_cylindre_u2_DEPENDENCIES) 
+	@rm -f test-cylindre-u2$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(test_cylindre_u2_OBJECTS) $(test_cylindre_u2_LDADD) $(LIBS)
+
 test-ddft-Kx$(EXEEXT): $(test_ddft_Kx_OBJECTS) $(test_ddft_Kx_DEPENDENCIES) $(EXTRA_test_ddft_Kx_DEPENDENCIES) 
 	@rm -f test-ddft-Kx$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(test_ddft_Kx_OBJECTS) $(test_ddft_Kx_LDADD) $(LIBS)
@@ -397,6 +426,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-cylindre-u1.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-cylindre-u2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-ddft-Kx.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-ddft-W.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-dft-u2.Po@am__quote@

@@ -20,9 +20,12 @@ c
 c
 #ifdef MPLIB_HAVE_UNARY
        double precision mplib_potential_unary
+       double precision mplib_cylinder_u1
+       double precision mplib_cylinder_u1_approx
 #endif
 c
 #ifdef MPLIB_HAVE_BINARY
        double precision mplib_potential_binary
+       double precision mplib_cylinder_u2_approx
 #endif
 c

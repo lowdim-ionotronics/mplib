@@ -1,3 +1,15 @@
+2012-08-28  version 1.7.8 <alphalee@gmail.com>
+
+	* cylindre-u1.c: bug fix. Tests OK.
+
+2012-08-27  version 1.7.7 <alphalee@gmail.com>
+
+	* cylindre-u1.c: self-energy added. Tests needed.
+
+2012-08-24 21:04 BST version 1.7.6 <alphalee@gmail.com>
+
+	*cylindre-u2.c added 
+
 2012-08-11 21:00 BST  version 1.7.5  <valiska@gmail.com>
 
 	* ddft-Wx-approx.c: mplib_ddft_Wx_approx(). Tests needed!

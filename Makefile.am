@@ -1,4 +1,4 @@
-SUBDIRS = lib tests
+SUBDIRS = lib python tests
 
 bin_SCRIPTS = mplib-config
 

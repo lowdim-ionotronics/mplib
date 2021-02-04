@@ -104,7 +104,7 @@ static double inline sum (double z1, double z2, double R)
 	void * p[] = {&z1, &z2, &R};
 
 	DPRINT("R=%e vs Rmax=%e\n", R, R_MAX);
-	if (R > R_MAX)
+	if (R >= R_MAX)
 	    return 0.0;
 
 	for (i = 0; i < N; i++)
