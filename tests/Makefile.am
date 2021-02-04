@@ -1,3 +1,3 @@
-SUBDIRS = c fortran
+SUBDIRS = c python fortran
 
 EXTRA_DIST = BUGS

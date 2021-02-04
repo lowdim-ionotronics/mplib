@@ -2,7 +2,7 @@ import sys
 def printf(format, *args):
     sys.stdout.write(format % args)
 
-import mplib
+import mplib_ctypes as mplib
 
 #
 # parameters
