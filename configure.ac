@@ -6,7 +6,7 @@ AC_INIT(mplib, 1.8.4, valiska@gmail.com)
 AC_CONFIG_SRCDIR([lib/u1.c])
 AC_CONFIG_HEADER([config.h])
 
-AM_PATH_PYTHON([3.6])
+AM_PATH_PYTHON([3.4])
 
 PACKAGE=mplib
 VERSION=1.8.4
