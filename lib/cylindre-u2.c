@@ -50,7 +50,8 @@ double mplib_cylinder_u2 (double rho1, double rho2, double phi, double z, double
 	for (i = 0; i < M; i++)
 	{
 		
-		s[i] = (kron(i,0)+1)*fm(i, p);
+		//s[i] = (kron(i,0)+1)*fm(i, p);
+		s[i] = am(i) * fm(i, p);
 		DPRINT ("cylindre(): s[%i]=%1.10e\n", i, s[i]);
 
 /* reinstate this break clause? Alpha 18/09/2012*/
@@ -70,7 +71,7 @@ double mplib_cylinder_u2 (double rho1, double rho2, double phi, double z, double
 
 	gsl_sum_levin_u_free (w);
 
-        result = 2*result/R; 
+        result = 2.*result/R; 
 
 	return result;
 }

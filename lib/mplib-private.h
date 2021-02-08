@@ -35,6 +35,7 @@
 __BEGIN_DECLS
 
 #define pow2(x)         ( (x) * (x) )
+#define am(n)		(n==0 ? 1. : 2.)
 
 /*
  * Some EPS defines

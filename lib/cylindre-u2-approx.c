@@ -52,7 +52,8 @@ double mplib_cylinder_u2_approx (double rho1, double rho2, double phi, double z,
 	for (i = 0; i < M; i++)
 	{
 		
-		s[i] = (kron(i,0)+1)*fm(i, p);
+		//s[i] = (kron(i,0)+1)*fm(i, p);
+		s[i] = am(i) * fm(i, p);
 		DPRINT ("cylindre(): s[%i]=%1.10e\n", i, s[i]);
 
 /* reinstate this break clause? Alpha 18/09/2012 */
