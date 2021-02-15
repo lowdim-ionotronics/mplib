@@ -3,6 +3,7 @@
 #
 import ctypes
 from ctypes import *
+import numpy as np
 
 # mplib must be installed in a searchable dir
 so_file = "libmplib.so"
