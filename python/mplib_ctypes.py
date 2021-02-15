@@ -19,6 +19,13 @@ mplib.mplib_cylinder_u2_approx.restype = ctypes.c_double
 def cyl_u1 (r1, R):
     return mplib.mplib_cylinder_u1 (ctypes.c_double(r1), ctypes.c_double(R))
 
+def cyl_u1_calc_array (R, rmax, n):
+    r=np.linspace (0,rmax, n)
+    U1 = []
+    for ri in r:
+        U1.append(cyl_u1 (ri, R))
+    return r,U1 
+
 def cyl_u1_app (r1, R):
     return mplib.mplib_cylinder_u1_approx (ctypes.c_double(r1), ctypes.c_double(R))
 
