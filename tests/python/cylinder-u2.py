@@ -7,10 +7,11 @@ import mplib_ctypes as mplib
 #
 # parameters
 #
-R = 5.2 / 2.; # pore radius
+D=10. # pore diameter in A
+R = 10. / 2.; # pore radius
 r0 = 0; # p1's radial position
-phi = 0.; # p2's radial position
-r1=0.; # p1's angle (wrt p2)
+r1=0. # p2's radial position
+phi = 0.;  # p1's angle (wrt p2)
 
 # ion diameter
 d = 5.

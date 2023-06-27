@@ -12,9 +12,10 @@ import mplib_ctypes as mplib
 diel=2.5
 T=300
 #
-d=7.0; # ion radius
+d=5.0; # ion diameter in A
 L2d = 1.1
-L = L2d * d; # slit width
+L = L2d * d; # slit width in A
+L=10.
 # z positions
 z1=L/2.;
 z2=L/2.
@@ -24,8 +25,8 @@ Rmax = 3. * d
 dR = 0.01 * d
 
 # separations for a square lattice
-R4 = np.array([d, d*np.sqrt(2), 2. * d, d * np.sqrt(5), 2. * d * np.sqrt(2)]);
-R3 = np.array([d, d*np.sqrt(3)]);
+#R4 = np.array([d, d*np.sqrt(2), 2. * d, d * np.sqrt(5), 2. * d * np.sqrt(2)]);
+#R3 = np.array([d, d*np.sqrt(3)]);
 
 # output
 printf("# Temperature %g \n", T); 
@@ -41,6 +42,7 @@ while R < Rmax:
 
     R=R+dR; 
 
+exit()
 printf ("\n\n")
 for R in R4:
     val = mplib.slit_u2 (z1, z2, R, L)
