@@ -46,6 +46,13 @@ mplib.mplib_potential_binary_approx.restype = ctypes.c_double
 def slit_u1 (z, L):
     return mplib.mplib_potential_unary (ctypes.c_double(z), ctypes.c_double(L) );
 
+def slit_u1_calc_array (L, eps, n):
+    z=np.linspace (eps,L-eps, n)
+    U1 = []
+    for zi in z:
+        U1.append(slit_u1 (zi, L))
+    return z,U1 
+
 def slit_u2 (z1, z2, R, L):
     return mplib.mplib_potential_binary (ctypes.c_double(z1), ctypes.c_double(z2), ctypes.c_double(R), ctypes.c_double(L) );
 
