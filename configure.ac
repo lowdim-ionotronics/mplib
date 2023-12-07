@@ -1,10 +1,10 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.61)
-AC_INIT(mplib, 1.8.4, valiska@gmail.com)
+AC_PREREQ([2.71])
+AC_INIT([mplib],[1.8.4],[valiska@gmail.com])
 AC_CONFIG_SRCDIR([lib/u1.c])
-AC_CONFIG_HEADER([config.h])
+AC_CONFIG_HEADERS([config.h])
 
 AM_PATH_PYTHON([3.4])
 
@@ -38,7 +38,7 @@ exit -1
 fi
 
 #AC_PROG_RANLIB
-AC_PROG_LIBTOOL
+LT_INIT
 
 # Checks for libraries.
 #
@@ -64,7 +64,7 @@ if test -x "$GSL_CONFIG"; then
   GSL_INCLUDES=`$GSL_CONFIG --cflags`
   GSL_LIBS=`$GSL_CONFIG --libs`
 else
-  AC_ERROR([GSL not found])
+  AC_MSG_ERROR(GSL not found)
 fi
 AC_SUBST(GSL_INCLUDES)
 AC_SUBST(GSL_LIBS)
@@ -77,14 +77,12 @@ AC_SUBST(GSL_LIBS)
 
 # 'Optimizization' must be beore all the other flags!
 AC_ARG_ENABLE([optimize],
-    [AC_HELP_STRING([--enable-optimize],
-            [disable debugging (removes -g flags) and set optimization level O3 (disabled)])],
+    [AS_HELP_STRING([--enable-optimize],[disable debugging (removes -g flags) and set optimization level O3 (disabled)])],
     [CFLAGS="-O3"], [CFLAGS="$CFLAGS_save"])
 
 # Enable/disable assetions
 AC_ARG_ENABLE(assertions,
-	      AC_HELP_STRING([--disable-assertions],
-			     [disable all assertions (enabled)]), 
+	      AS_HELP_STRING([--disable-assertions],[disable all assertions (enabled)]), 
 			     [disable_assertions=yes AC_DEFINE([MPLIB_NO_ASSERT],,[no assertions])],
 			      disable_assertions=no)
 

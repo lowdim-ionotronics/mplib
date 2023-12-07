@@ -6015,8 +6015,8 @@ esac
 
 
 
-macro_version='2.4.7-dirty'
-macro_revision='2.4.7'
+macro_version='2.4.7.4-1ec8f-dirty'
+macro_revision='2.4.7.4'
 
 
 

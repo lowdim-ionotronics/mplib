@@ -9,12 +9,12 @@ import mplib_ctypes as mplib
 # parameters
 #
 # dielectric constant and T
-diel=2.5
-T=300
+diel=2
+T=400
 conv = 332.0636 * 503.2166 / diel / T
 
 #
-d=5.0; # ion diameter in A
+d=7.0; # ion diameter in A
 L= d
 Lmax = 3. * d
 dL = 0.01 * d
