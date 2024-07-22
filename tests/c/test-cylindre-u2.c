@@ -28,7 +28,7 @@
 int main (int argc, char ** argv) {
 
 // pore diameter in A
-double D = 10
+double D = 10;
 double R = D/2.;
 /*double r0=0; */
 double r0 = 0;

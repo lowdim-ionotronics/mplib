@@ -26,6 +26,7 @@
 #include <math.h>
 
 #include <gsl/gsl_integration.h>
+#include <gsl/gsl_sf_bessel.h>
 
 static double inline integral (double z1, double z2);
 
