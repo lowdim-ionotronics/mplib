@@ -38,12 +38,13 @@ printf("# Temperature %g \n", T);
 printf("# Dielectric constant %g \n", diel); 
 printf("# Particles' perpendicular position (across the slit): %g, %g\n", z1, z2);
 #printf("# R (A)         U (1/A)         U (Hartree) 	Coulomb (Hartree)\n"); 
-printf("# R (A)         U (1/A)         U (kBT) 	Coulomb (KBT)       \n"); 
+#printf("# R (A)         U (1/A)         U (kBT) 	Coulomb (KBT)       \n"); 
+printf("# R (A)          U (kcal/mol)    F (kcal/mol/A)) \n"); 
 
 #K2H = 0.0000031667908523699422
 K2H=1
 conv1 = 332.0636 * 503.2166
-conv2 = 0.5922 # kBt to kcal/mole at T=298
+conv2 = 0.5922 # kBT to kcal/mole at T=298
 E_kcalmol =[]
 R_A = []
 while R < Rmax:
