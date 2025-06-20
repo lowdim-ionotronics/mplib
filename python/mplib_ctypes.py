@@ -43,6 +43,9 @@ mplib.mplib_potential_unary.restype = ctypes.c_double
 mplib.mplib_potential_binary.restype = ctypes.c_double
 mplib.mplib_potential_binary_approx.restype = ctypes.c_double
 
+mplib.mplib_dft_u1.restype = ctypes.c_double
+mplib.mplib_dft_u2.restype = ctypes.c_double
+
 def slit_u1 (z, L):
     return mplib.mplib_potential_unary (ctypes.c_double(z), ctypes.c_double(L) );
 
