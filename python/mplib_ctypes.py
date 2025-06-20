@@ -58,3 +58,11 @@ def slit_u2 (z1, z2, R, L):
 
 def slit_u2_app (z1, z2, R, L):
     return mplib.mplib_potential_binary_approx (ctypes.c_double(z1), ctypes.c_double(z2), ctypes.c_double(R), ctypes.c_double(L) );
+
+# DFT type potentials (ie integrated in the lateral directions)
+def slit_dft_u1 (z, L, LB):
+    return mplib.mplib_dft_u1 (ctypes.c_double(z), ctypes.c_double(L), ctypes.c_double(LB));
+
+def slit_dft_u2 (z1, z2, L, LB, b):
+    return mplib.mplib_dft_u2 (ctypes.c_double(z1), ctypes.c_double(z2), ctypes.c_double(L), ctypes.c_double(LB), ctypes.c_double(b) );
+

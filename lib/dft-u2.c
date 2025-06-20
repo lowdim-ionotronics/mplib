@@ -2,7 +2,7 @@
  *
  *  mplib_dft_u2 (z1, z2, L, LB, b) calculates the effective modified mean-field interaction potential:
  *
- *  	u2 (z1, z2) = 4 LB R0 sum_1^\infty (1/n) sin (pi n z1/L) sin (pi n z2/L) K1 (pi n Rc / L)
+ *  	u2 (z1, z2) = 4 LB R0 sum_1^\infty (1/n) sin (pi n z1/L) sin (pi n z2/L) K1 (pi n R0 / L)
 
  *  for R0 > 0, and
  *						
