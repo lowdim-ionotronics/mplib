@@ -1,6 +1,6 @@
 /*  u2.c 2012-08-24 test binary potential
  *
- * Copyright (C) 2012 Alpha 
+ * Copyright (C) 2012 Svyatoslav Kondrat (Valiska)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,6 +79,6 @@ double ir, iphi ;
 
 #endif
 
-	return 1;
+	return 0;
 }
 

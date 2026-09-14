@@ -32,15 +32,14 @@ printf("# Tube radius %g (diameter %g) \n", R, 2. * R);
 printf("# Particles' radial positions: %g, %g\n", r0, r1);
 printf("# Particles' orientation: %g\n", phi);
 
-#printf("# z (A)         U (1/A)         U (kBT)        U_approx (1/A)  U_approx (kBT)\n"); 
-printf("# z (A)         U (1/A)         U (kBT)        Coulomb (KBT)\n"); 
+printf("# z (A)         U (1/A)         U (kBT)        U_approx (1/A)  U_approx (kBT)  Coulomb (KBT)\n")
 
 
 while z < zmax:
     val = mplib.cyl_u2 (r0, r1, phi, z, R)
     val_app = mplib.cyl_u2_app (r0, r1, phi, z, R)
-    #printf(" %e  % e   % e  % e   % e\n", z, val, 332.0636 * 503.2166 * val / diel / T,  val_app, 332.0636 * 503.2166 * val_app / diel / T); 
-    printf(" %e  % e   % e  % e \n", z, val, 332.0636 * 503.2166 * val / diel / T, 332.0636 * 503.2166 / diel / T / z); 
+    printf(" %e  % e   % e  % e   % e  % e \n", z, val, 332.0636 * 503.2166 * val / diel / T,
+           val_app, 332.0636 * 503.2166 * val_app / diel / T, 332.0636 * 503.2166 / diel / T / z)
 
-    z=z+dz; 
+    z=z+dz
 

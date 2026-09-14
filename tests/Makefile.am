@@ -1,3 +1,4 @@
-SUBDIRS = c python fortran
-
-EXTRA_DIST = BUGS
+SUBDIRS = c python
+if HAVE_FORTRAN
+SUBDIRS += fortran
+endif

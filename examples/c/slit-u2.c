@@ -202,5 +202,5 @@ int main (int argc, char ** argv) {
 		z, Z,  R, mplib_potential_binary (z, Z, R, L), 
 		mplib_potential_binary (z, Z, 0.0, L));
 */
-	return 1;
+	return 0;
 }
