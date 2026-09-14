@@ -1,5 +1,10 @@
 /*  cylindre-u2-approx.c  2015-02-27  2body potential energy (up to a coeff)
  *
+ * Polynomial approximation to the cylinder pairwise interaction computed
+ * in cylindre-u2.c. See:
+ *   10.1103/PhysRevLett.113.048701
+ *   10.1002/cphc.201300834
+ *
  * Copyright (C) 2015 S Kondrat aka Valiska
  *
  * This program is free software; you can redistribute it and/or modify
@@ -56,7 +61,7 @@ double mplib_cylinder_u2_approx (double rho1, double rho2, double phi, double z,
 		s[i] = am(i) * fm(i, p);
 		DPRINT ("cylindre(): s[%i]=%1.10e\n", i, s[i]);
 
-/* reinstate this break clause? Alpha 18/09/2012 */
+/* TODO: reinstate this break clause? */
 /*
 		 if (fabs(s[i]) < EPS_SUM)
 			break;

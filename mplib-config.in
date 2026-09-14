@@ -11,7 +11,7 @@ Usage: mplib-config [OPTION]
 
 Known values for OPTION are:
 
-  --prefix		show f3dm installation prefix 
+  --prefix		show mplib installation prefix
   --libs		print library linking information, with cblas
   --cflags		print pre-processor and compiler flags
   --help		display this help and exit

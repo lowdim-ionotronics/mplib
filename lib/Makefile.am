@@ -1,8 +1,6 @@
 lib_LTLIBRARIES = libmplib.la
 
-libmplib_la_SOURCES = u1.c  u2.c u2-approx.c potentials_f.c \
-	dft-u1.c dft-u2.c dft-u2-approx.c \
-	ddft-W.c ddft-Wx.c ddft-W-approx.c ddft-Wx-approx.c\
+libmplib_la_SOURCES = slit-u1.c slit-u2.c slit-u2-approx.c potentials_f.c \
 	cylindre-u2.c cylindre-u1.c \
 	cylindre-u2-approx.c cylindre-u1-approx.c
 

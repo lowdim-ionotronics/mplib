@@ -1,6 +1,12 @@
 /*  cylindre-u2.c  2012-08-28  2body potential energy (up to a coeff)
  *
- * Copyright (C) 2012 Alpha Lee
+ * Pairwise electrostatic interaction between two ions in a cylindrical
+ * metallic pore.
+ * See:
+ *   10.1103/PhysRevLett.113.048701
+ *   10.1002/cphc.201300834
+ *
+ * Copyright (C) 2012 Svyatoslav Kondrat (Valiska)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,7 +60,7 @@ double mplib_cylinder_u2 (double rho1, double rho2, double phi, double z, double
 		s[i] = am(i) * fm(i, p);
 		DPRINT ("cylindre(): s[%i]=%1.10e\n", i, s[i]);
 
-/* reinstate this break clause? Alpha 18/09/2012*/
+/* TODO: reinstate this break clause? */
 
 		 if (fabs(s[i]) < EPS_SUM)
 			break;

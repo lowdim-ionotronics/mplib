@@ -5,9 +5,23 @@ import ctypes
 from ctypes import *
 import numpy as np
 
-# mplib must be installed in a searchable dir
+# libmplib.so must be on the OS dynamic loader's search path (e.g.
+# LD_LIBRARY_PATH set to the install prefix's lib/, or `ldconfig` re-run
+# after installing to a standard location). We don't consume the
+# mplib-config/mplib.pc that `./configure` also generates -- those are
+# meant for other autotools/pkg-config *build* systems to find mplib's
+# headers/libs at compile time, not for a plain `ctypes.CDLL` runtime
+# lookup, so they wouldn't help here anyway.
 so_file = "libmplib.so"
-mplib = CDLL(so_file, mode=1)
+try:
+    mplib = CDLL(so_file, mode=1)
+except OSError as e:
+    raise OSError(
+        f"Could not load {so_file}: {e}\n"
+        "Build it first (./configure && make in the mplib repo root), then "
+        "make sure its lib/ directory is on LD_LIBRARY_PATH (or run `make "
+        "install` and point LD_LIBRARY_PATH at the install prefix's lib/)."
+    ) from e
 
 #
 # ions in a metallic cylinder 
@@ -43,9 +57,6 @@ mplib.mplib_potential_unary.restype = ctypes.c_double
 mplib.mplib_potential_binary.restype = ctypes.c_double
 mplib.mplib_potential_binary_approx.restype = ctypes.c_double
 
-mplib.mplib_dft_u1.restype = ctypes.c_double
-mplib.mplib_dft_u2.restype = ctypes.c_double
-
 def slit_u1 (z, L):
     return mplib.mplib_potential_unary (ctypes.c_double(z), ctypes.c_double(L) );
 
@@ -61,11 +72,4 @@ def slit_u2 (z1, z2, R, L):
 
 def slit_u2_app (z1, z2, R, L):
     return mplib.mplib_potential_binary_approx (ctypes.c_double(z1), ctypes.c_double(z2), ctypes.c_double(R), ctypes.c_double(L) );
-
-# DFT type potentials (ie integrated in the lateral directions)
-def slit_dft_u1 (z, L, LB):
-    return mplib.mplib_dft_u1 (ctypes.c_double(z), ctypes.c_double(L), ctypes.c_double(LB));
-
-def slit_dft_u2 (z1, z2, L, LB, b):
-    return mplib.mplib_dft_u2 (ctypes.c_double(z1), ctypes.c_double(z2), ctypes.c_double(L), ctypes.c_double(LB), ctypes.c_double(b) );
 

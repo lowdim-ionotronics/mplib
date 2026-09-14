@@ -1,6 +1,11 @@
 /*  cylindre-u1.c  2012-08-26  self energy (up to a coeff)
  *
- * Copyright (C) 2012 Alpha Lee
+ * Electrostatic self-energy of an ion in a cylindrical metallic pore.
+ * See:
+ *   10.1103/PhysRevLett.113.048701
+ *   10.1002/cphc.201300834
+ *
+ * Copyright (C) 2012 Svyatoslav Kondrat (Valiska)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

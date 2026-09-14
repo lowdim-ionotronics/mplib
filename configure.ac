@@ -2,14 +2,14 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.71])
-AC_INIT([mplib],[1.8.4],[valiska@gmail.com])
-AC_CONFIG_SRCDIR([lib/u1.c])
+AC_INIT([mplib],[2.0],[valiska@gmail.com])
+AC_CONFIG_SRCDIR([lib/slit-u1.c])
 AC_CONFIG_HEADERS([config.h])
 
 AM_PATH_PYTHON([3.4])
 
 PACKAGE=mplib
-VERSION=1.8.4
+VERSION=2.0
 
 dnl IFACE_NUMBER (current) : REV : AGE (< IFACE_NUMBER)
 MPLIB_LT_VERSION="8:0:8"
@@ -20,7 +20,8 @@ AC_SUBST(PACKAGE_STRING)
 AC_SUBST(VERSION)
 
 #AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
-AM_INIT_AUTOMAKE()
+# 'foreign': don't require GNU-standard files (ChangeLog etc) to exist.
+AM_INIT_AUTOMAKE([foreign])
 
 
 dnl maintainer
@@ -30,11 +31,16 @@ MPLIB_MAINTAINER="valiska@gmail.com"
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_CXX
+
+# Fortran is optional: only needed for the Towhee-style Fortran-callable
+# wrappers' test (tests/fortran/u1.F), not for the C library or Python
+# bindings that single-file/mpore-gcmc actually use. Soft-detect gfortran and
+# skip that one test directory if it isn't present, rather than forcing
+# every user to install a Fortran toolchain.
 AC_PROG_F77(gfortran)
-if( test -z $F77 )
-then
-echo "Error : Fortran compiler F77 not found."
-exit -1
+AM_CONDITIONAL([HAVE_FORTRAN], [test -n "$F77"])
+if test -z "$F77"; then
+  AC_MSG_WARN([no Fortran compiler found; skipping tests/fortran (the C library and Python bindings are unaffected)])
 fi
 
 #AC_PROG_RANLIB
