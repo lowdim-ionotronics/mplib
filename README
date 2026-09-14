@@ -1,34 +1,91 @@
-This is the MPLIB library. It provides the functions to calculate the
-binary and unary potentials arising from the Image Forces in Metalic
-nano-Pores, hence the name.
+This is the MPLIB library. It provides functions to calculate the unary
+(self-energy) and binary (pairwise) electrostatic potentials arising from
+image forces on ions confined in metallic nano-pores, hence the name.
 
-Configure options:
-~~~~~~~~~~~~~~~~~~
+Two pore geometries are supported: a slit (2D) metallic pore and a
+cylindrical (1D) metallic pore. Both a numerically exact and a faster
+polynomial-approximation variant are provided for each function; see the
+per-function references below for the valid range of the approximations.
 
---disable-assertions: to disable all MPLIB assertion. Use it after the
-programs is tested and runs OK.
+mplib is used by the sibling projects `single-file` (analytical solver for
+ions in a single-file cylindrical pore) and `mpore-gcmc` (GCMC simulation of
+ions in cylindrical/slit pores) via the Python ctypes bindings in
+python/mplib_ctypes.py.
 
---enable-optimize: switch onmore optimization. This uses -O3 (instead of
-the standard O3 optimization level) and removed -g flag. Not recomened
-to use on testing stage.
+Build prerequisites
+~~~~~~~~~~~~~~~~~~~
 
-The following functions are provided:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- A C compiler and GNU Autotools (only needed if building from a git
+  checkout rather than a release tarball; run `autoreconf -fi` first).
+- GSL (GNU Scientific Library) -- required. `./configure` will fail with
+  "GSL not found" if `gsl-config` isn't on your PATH.
+- Python >= 3.4 -- required for the Python bindings (python/mplib_ctypes.py).
+- A Fortran compiler (gfortran) -- optional. Only needed to build
+  tests/fortran/u1.F, a smoke test for the Fortran-callable wrappers in
+  lib/potentials_f.c (used historically to call mplib from Towhee). If no
+  Fortran compiler is found, `./configure` prints a warning and skips that
+  one test directory; the C library and Python bindings are unaffected.
+- pytest -- needed to run the primary test suite (`make check`; see
+  tests/python/test_mplib.py). `pip install pytest` if not already present.
 
-1. Raw interaction potentials to be used in MC simulations (and are
-actually used by towheemp):
+Build and test
+~~~~~~~~~~~~~~
 
-U1 = mplib_potentials_unary(z, L)
-U2 = mplib_potential_binary (z1, z2, L)
+    ./configure
+    make
+    make check     # builds+runs the C smoke tests and the pytest suite
+    make install
 
-2. Average potentials to be used in the DFT-like treatments:
+The Python bindings (python/mplib_ctypes.py) load the compiled library via
+a bare `ctypes.CDLL("libmplib.so")`, which relies on the OS dynamic
+loader's default search path. After `make install`, make sure the install
+prefix's lib/ directory is on LD_LIBRARY_PATH (or run `ldconfig` if
+installing to a standard system location) before importing it from Python.
 
-u1 = mplib_dft_u1 (z, L, LB): this is essentially U1 up to a constant
-but kept separatelly for clearness. u1 = - LB U1. LB is the Bjerrum
-length.
+Configure options
+~~~~~~~~~~~~~~~~~
 
-u2 = mplib_dft_u2 (z1, z2, L,. LB, b): this is effective potential
-integrated in the two lateral directions. here b is the 'cut-out'
-radius. One can set it to be: b=0 (no short range correlations), b=d
-(ion diameter) or b = (4 pi rho/3)^{-1/3} for the cut-out sphere
-approximation.
+--disable-assertions: disable all MPLIB assertions. Use only after the
+programs are tested and run OK -- with assertions disabled, an
+out-of-range input is undefined behaviour rather than a clean abort.
+
+--enable-optimize: more aggressive optimization (-O3, no -g). Not
+recommended while testing.
+
+Functions provided
+~~~~~~~~~~~~~~~~~~~
+
+1. Ions confined in a slit (2D) metallic pore, to be used in MC
+simulations (and actually used by towheemp):
+
+    U1 = mplib_potential_unary (z, L)
+    U2 = mplib_potential_binary (z1, z2, R, L)
+
+with mplib_potential_binary_approx for a faster approximate evaluation.
+See S Kondrat & A A Kornyshev, "Superionic state in double-layer
+capacitors with nanoporous electrodes", J Phys: Condens. Matter 23,
+022201 (2011), doi:10.1088/0953-8984/23/2/022201.
+
+2. Ions confined in a cylindrical (1D) metallic pore:
+
+    U1 = mplib_cylinder_u1 (r1, R)
+    U2 = mplib_cylinder_u2 (rho1, rho2, phi, z, R)
+
+with polynomial-approximation variants mplib_cylinder_u1_approx /
+mplib_cylinder_u2_approx for faster (but less accurate -- see the source
+for the valid range) evaluation. See:
+  A A Lee, S Kondrat & A A Kornyshev, "Single-File Charge Storage in
+  Conducting Nanopores", Phys. Rev. Lett. 113, 048701 (2014),
+  doi:10.1103/PhysRevLett.113.048701.
+
+  C C Rochester, A A Lee, G Pruessner & A A Kornyshev, "Interionic
+  Interactions in Conducting Nanoconfinement", ChemPhysChem 14(18),
+  4121-4125 (2013), doi:10.1002/cphc.201300834.
+
+Note: earlier internal versions of this library also included DFT/DDFT
+potential functions (mplib_dft_u1/u2, mplib_ddft_W/Wx) used for an
+unpublished project and for the dynamical-charging work in J. Phys. Chem.
+C (2013). These have been removed from this public release, since they
+were undocumented in-repo beyond "see notes elsewhere" (notes that don't
+actually exist here) and aren't used by any of the currently-published
+sibling projects. Get in touch if you need them.
